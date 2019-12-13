@@ -1,4 +1,5 @@
 import uniqueId from '@/utils/unique-id'
+import { tsConstructSignatureDeclaration } from '@babel/types'
 
 export default class BaseModel {
   constructor(data) {
@@ -36,10 +37,18 @@ export default class BaseModel {
       : null
   }
 
-  toDict() {
+  toDict({ fields = [], exclude = [] } = {}) {
     let dict = {}
 
-    Object.keys(this).map(key => {
+    if (!fields.length) {
+      fields = Object.keys(this)
+    }
+
+    if (exclude) {
+      fields = fields.filter(item => exclude.indexOf(item) === -1)
+    }
+
+    fields.map(key => {
       const val = this[key]
       if (val && typeof val.toDict === 'function') {
         dict[key] = val.toDict()

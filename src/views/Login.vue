@@ -1,7 +1,9 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col cols="12" sm="8" md="4">
-      <div class="text-h6">Sign in</div>
+    <v-col cols="10" sm="8" md="4">
+      <div class="text-h6" justify="center">
+        Sign in
+      </div>
       <section id="firebaseui-auth-container"></section>
     </v-col>
   </v-row>

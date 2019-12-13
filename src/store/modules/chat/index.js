@@ -42,7 +42,7 @@ export default {
       })
 
       dispatch('firebaseCreate', {
-        ...message.toDict(),
+        ...message.toDict({ exclude: ['author'] }),
         authorId: rootGetters['users/authUser'].id
       })
     }

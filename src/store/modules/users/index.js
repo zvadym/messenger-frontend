@@ -46,11 +46,10 @@ export default {
             avatar: payload.photoURL
           })
         : null
-      commit(SET_USER, user.toDict())
+      commit(SET_USER, user && user.toDict())
 
       // A new users must be added to the firebase store.
-      // TODO:
-      if (!getters.getById(user.id)) {
+      if (user && !getters.getById(user.id)) {
         dispatch('firebaseCreate', { user: { ...user } })
       }
     }
