@@ -1,17 +1,13 @@
 <template>
-  <div>
-    <Header />
+  <v-app>
+    <Header app />
 
     <v-content>
-      <v-container fluid fill-height>
+      <v-container fluid fill-height class="pa-0">
         <router-view />
       </v-container>
     </v-content>
-
-    <v-footer app>
-      <span>&copy; 2019</span>
-    </v-footer>
-  </div>
+  </v-app>
 </template>
 
 <script>

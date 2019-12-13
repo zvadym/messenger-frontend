@@ -11,9 +11,13 @@ import firebase from '@/services/firebase/index'
 
 export default {
   created() {
+    // Get auth user
     firebase.auth().onAuthStateChanged(user => {
-      this.$store.dispatch('users/setUser', user)
+      this.$store.dispatch('users/setAuthUser', user)
     })
+
+    // Bind users to firebase
+    this.$store.dispatch('users/firebaseBind')
   }
 }
 </script>

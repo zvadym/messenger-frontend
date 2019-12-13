@@ -1,16 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { vuexfireMutations } from 'vuexfire'
 
-import users from './modules/users'
+import chat from './modules/chat/index'
+import users from './modules/users/index'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   modules: {
+    chat,
     users
   },
   state: {},
-  mutations: {},
+  mutations: {
+    ...vuexfireMutations
+  },
   actions: {}
 })

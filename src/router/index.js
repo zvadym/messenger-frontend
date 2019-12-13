@@ -1,23 +1,25 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DefaultLayout from '@/views/Base.vue'
-import PrivateChat from '@/views/PrivateChat.vue'
-import Login from '@/views/Login.vue'
 import firebase from '@/services/firebase/index'
 
 Vue.use(Router)
+
+function loadView(view) {
+  return () =>
+    import(/* webpackChunkName: "view-[request]" */ `@/views/${view}.vue`)
+}
 
 const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      component: DefaultLayout,
+      component: loadView('Base'),
       children: [
         {
           path: '',
           name: 'home',
-          component: PrivateChat,
+          component: loadView('PrivateChat'),
           meta: {
             auth: true
           }
@@ -25,7 +27,7 @@ const router = new Router({
         {
           path: '/login',
           name: 'login',
-          component: Login
+          component: loadView('Login')
         }
       ]
     }
