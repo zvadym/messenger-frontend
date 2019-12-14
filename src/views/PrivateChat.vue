@@ -2,13 +2,13 @@
   <v-container id="chat-area" fill-height>
     <v-row no-gutters>
       <v-col cols="12">
-        <v-list rounded>
+        <ul class="messages">
           <Message
-            v-for="(item, i) in messages"
-            :key="i + 'message'"
+            v-for="item in messages"
+            :key="'message-' + item.id"
             :data="item"
           />
-        </v-list>
+        </ul>
       </v-col>
     </v-row>
 
@@ -42,5 +42,8 @@ export default {
 <style scoped>
 #chat-area {
   align-items: flex-start;
+}
+.messages {
+  padding: 0;
 }
 </style>
