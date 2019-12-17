@@ -1,9 +1,10 @@
 <template>
   <v-app>
     <Header app />
+    <UserIdle />
 
     <v-content>
-      <v-container fluid fill-height class="pa-0">
+      <v-container fluid fill-height class="pa-0" grey lighten-3>
         <router-view />
       </v-container>
     </v-content>
@@ -12,10 +13,12 @@
 
 <script>
 import Header from '@/components/Header'
+import UserIdle from '@/components/UserIdle'
 
 export default {
   components: {
-    Header
+    Header,
+    UserIdle
   }
 }
 </script>
