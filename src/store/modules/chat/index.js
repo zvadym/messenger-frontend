@@ -1,8 +1,5 @@
 import { firestoreAction } from 'vuexfire'
-
-import { UserModel } from '@/store/modules/users/models'
 import { MessageModel } from './models'
-
 import { messagesRef } from '@/services/firebase/index'
 
 const firebaseActions = {
@@ -16,8 +13,7 @@ const firebaseActions = {
         const data = snapshot.data()
         return new MessageModel({
           ...data,
-          id: snapshot.id,
-          author: new UserModel({ ...snapshot.authorId })
+          id: snapshot.id
         })
       },
       reset: false
@@ -36,14 +32,14 @@ export default {
   },
   actions: {
     ...firebaseActions,
-    addMessage({ dispatch, rootGetters }, payload) {
+    addMessage({ dispatch, rootState }, payload) {
       const message = new MessageModel({
-        message: payload.message
+        message: payload.message,
+        authorId: rootState.users.authUser.id
       })
 
       dispatch('firebaseCreate', {
-        ...message.toDict({ exclude: ['author'] }),
-        authorId: rootGetters['users/authUser'].id
+        ...message.toDict()
       })
     }
   },

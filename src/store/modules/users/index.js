@@ -12,51 +12,50 @@ const firebaseActions = {
     return bindFirestoreRef('users', usersRef, {
       serialize: snapshot => {
         // Wrap data into the model to set all required fields
-        const data = snapshot.data()
-        return {
-          ...new UserModel({
-            ...data
-          })
-        }
+        return new UserModel({
+          ...snapshot.data()
+        })
       },
       reset: false
     })
+  }),
+  updateActionAt: firestoreAction((context, { user }) => {
+    return usersRef.doc(user.id).update({ lastActionAt: Date.now() })
   })
 }
 
 export default {
   namespaced: true,
   state: {
-    authUser: null,
+    authUserId: null,
     users: []
   },
   getters: {
-    authUser: state => state.authUser,
-    users: state => state.users,
-    getById: state => id => state.users.find(item => item.id === id)
+    getById: state => id => state.users.find(item => item.id === id),
+    getAuthUser: (state, getters) =>
+      state.authUserId && getters.getById(state.authUserId)
   },
   actions: {
     ...firebaseActions,
     setAuthUser({ commit, getters, dispatch }, payload) {
-      const user = payload
-        ? new UserModel({
-            id: payload.uid,
-            name: payload.displayName,
-            email: payload.email,
-            avatar: payload.photoURL
-          })
-        : null
-      commit(SET_USER, user && user.toDict())
+      const userId = payload && payload.uid
+      commit(SET_USER, userId)
 
       // A new users must be added to the firebase store.
-      if (user && !getters.getById(user.id)) {
-        dispatch('firebaseCreate', { user: { ...user } })
+      if (userId && !getters.getById(userId)) {
+        const user = new UserModel({
+          id: payload.uid,
+          name: payload.displayName,
+          email: payload.email,
+          avatar: payload.photoURL
+        })
+        dispatch('firebaseCreate', { user: user.toDict() })
       }
     }
   },
   mutations: {
-    [SET_USER](state, user) {
-      state.authUser = user
+    [SET_USER](state, uid) {
+      state.authUserId = uid
     }
   }
 }

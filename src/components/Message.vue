@@ -1,32 +1,35 @@
 <template>
   <li
+    class="item mx-0 my-3"
     :class="{
-      item: true,
       rightSide: isMyMessage,
       leftSide: !isMyMessage
     }"
   >
-    <v-avatar size="30" class="avatar" v-if="!isMyMessage">
-      <v-img :src="avatar" />
-    </v-avatar>
+    <UserAvatar :user="author" v-if="!isMyMessage" />
+
     <div class="message body-2 primary white--text">
       {{ data.message }}
     </div>
+    <div class="clearfix"></div>
   </li>
 </template>
 
 <script>
+import UserAvatar from './UserAvatar'
+
 export default {
-  name: 'ChatMessage',
+  name: 'Message',
   props: {
-    data: [Object]
+    data: Object
   },
+  components: { UserAvatar },
   computed: {
-    avatar: function() {
-      return this.data.author.avatar
+    author() {
+      return this.$store.getters['users/getById'](this.data.authorId)
     },
-    isMyMessage: function() {
-      return this.$store.getters['users/authUser'].id === this.data.author.id
+    isMyMessage() {
+      return this.$store.state.users.authUserId === this.data.authorId
     }
   }
 }
@@ -34,8 +37,6 @@ export default {
 
 <style lang="sass" scoped>
 .item
-  margin: 20px 0
-
   .message
     display: inline-block
     border: 1px solid #ccc
@@ -52,4 +53,7 @@ export default {
     .message
       float: right
       margin-left: 50px
+
+  .clearfix
+    clear: both
 </style>
