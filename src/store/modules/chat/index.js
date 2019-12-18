@@ -35,7 +35,7 @@ export default {
     addMessage({ dispatch, rootState }, payload) {
       const message = new MessageModel({
         message: payload.message,
-        authorId: rootState.users.authUser.id
+        authorId: rootState.users.authUserId
       })
 
       dispatch('firebaseCreate', {

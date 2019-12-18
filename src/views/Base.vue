@@ -3,7 +3,7 @@
     <Header app />
     <UserIdle />
 
-    <v-content>
+    <v-content id="root-content">
       <v-container fluid fill-height class="pa-0" grey lighten-3>
         <router-view />
       </v-container>

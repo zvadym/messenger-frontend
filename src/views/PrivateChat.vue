@@ -3,11 +3,7 @@
     <v-row no-gutters>
       <v-col cols="12">
         <ul class="messages">
-          <Message
-            v-for="item in messages"
-            :key="'message-' + item.id"
-            :data="item"
-          />
+          <Message v-for="item in messages" :key="'message-' + item.id" :data="item" />
         </ul>
       </v-col>
     </v-row>
@@ -22,19 +18,40 @@ import Message from '@/components/Message'
 
 export default {
   components: { NewMessageInput, Message },
+  data() {
+    return {
+      lastMessageAt: null
+    }
+  },
   computed: {
     messages() {
       return this.$store.getters['chat/messages']
     }
   },
+  watch: {
+    messages: function(newVal) {
+      const newMsg = newVal[newVal.length - 1]
+
+      // Detect a new message comparing `lastMessageAt` with message's `createdAt`
+      if (newMsg && newMsg.createdAt > this.lastMessageAt) {
+        this.$nextTick(this.scrollToBottom)
+        this.lastMessageAt = newMsg.createdAt
+      }
+    }
+  },
   methods: {
     createMessage(message) {
       this.$store.dispatch('chat/addMessage', { message })
+    },
+    scrollToBottom() {
+      document
+        .getElementById('root-content')
+        .scrollIntoView(false, { block: 'end' })
     }
   },
   mounted: function() {
     // firebase sync
-    this.$store.dispatch('chat/firebaseBind')
+    this.$store.dispatch('chat/firebaseBind').then(this.scrollToBottom)
   }
 }
 </script>
