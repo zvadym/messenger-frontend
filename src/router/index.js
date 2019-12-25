@@ -19,7 +19,23 @@ const router = new Router({
         {
           path: '',
           name: 'home',
-          component: loadView('PrivateChat'),
+          component: loadView('Channel'),
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: '/create-channel',
+          name: 'new-channel',
+          component: loadView('NewChannel'),
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: '/channel/:id',
+          name: 'channel',
+          component: loadView('Channel'),
           meta: {
             auth: true
           }

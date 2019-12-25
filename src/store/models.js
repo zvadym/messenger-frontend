@@ -1,5 +1,4 @@
 import uniqueId from '@/utils/unique-id'
-import { tsConstructSignatureDeclaration } from '@babel/types'
 
 export default class BaseModel {
   constructor(data) {

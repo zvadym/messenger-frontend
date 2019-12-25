@@ -18,6 +18,10 @@ export default {
 
     // Bind users to firebase
     this.$store.dispatch('users/firebaseBind')
+
+    // Bind channels
+    // TODO: bind only user's channels
+    this.$store.dispatch('chat/firebaseChannelBind')
   }
 }
 </script>

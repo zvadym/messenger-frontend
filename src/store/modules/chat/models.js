@@ -1,9 +1,8 @@
 import BaseModel from '@/store/models'
-import { UserModel } from '@/store/modules/users/models'
 
 export class MessageModel extends BaseModel {
   fields() {
-    return ['id', 'author', 'authorId', 'message', 'createdAt']
+    return ['id', 'channelId', 'authorId', 'message', 'createdAt']
   }
 
   defaults() {
@@ -12,8 +11,28 @@ export class MessageModel extends BaseModel {
       createdAt: Date.now()
     }
   }
+}
 
-  get_author_value(field, modelData) {
-    return UserModel.getById(modelData.authorId)
+export class ChannelModel extends BaseModel {
+  fields() {
+    return [
+      'id',
+      'title',
+      'authorId',
+      'memberIds',
+      'createdAt',
+      'lastMessageAt',
+      'userTyping',
+      'isPrivate'
+    ]
+  }
+
+  defaults() {
+    return {
+      id: this.guid(),
+      createdAt: Date.now(),
+      userTyping: false,
+      isPrivate: true
+    }
   }
 }

@@ -26,7 +26,7 @@ export default {
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
       callbacks: {
-        signInSuccessWithAuthResult: data => {
+        signInSuccessWithAuthResult: () => {
           this.$router.push({ name: 'home' })
         }
       }

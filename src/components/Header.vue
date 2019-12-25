@@ -28,36 +28,46 @@
         </v-list-item>
       </template>
 
-      <v-divider></v-divider>
+      <v-divider />
+      <ChannelsList @closeMenu="closeMenu" />
     </v-navigation-drawer>
 
-    <v-app-bar app clipped-left>
+    <v-app-bar app absolute clipped-left>
       <v-app-bar-nav-icon
         v-if="user"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
-      <v-toolbar-title>Odin Vue</v-toolbar-title>
+      <v-toolbar-title v-if="activeChannel"
+        >#{{ activeChannel.title }}
+      </v-toolbar-title>
+      <v-toolbar-title v-else>Odin chats</v-toolbar-title>
     </v-app-bar>
   </div>
 </template>
 
 <script>
 import firebase from '@/services/firebase/index'
-import DirectChannels from './DirectChannels'
+import ChannelsList from './ChannelsList'
 import UserAvatar from './UserAvatar'
 
 export default {
   name: 'Header',
-  components: { DirectChannels, UserAvatar },
+  components: { ChannelsList, UserAvatar },
   data: () => ({
     drawer: null
   }),
   computed: {
     user() {
       return this.$store.getters['users/getAuthUser']
+    },
+    activeChannel() {
+      return this.$store.getters['chat/activeChannel']
     }
   },
   methods: {
+    closeMenu() {
+      this.drawer = false
+    },
     signOut() {
       firebase.auth().signOut()
       this.$store.dispatch('users/setUser', null)
