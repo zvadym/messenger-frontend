@@ -2,13 +2,14 @@
   <v-container id="chat-area" fill-height>
     <v-row no-gutters>
       <v-col cols="12">
-        <ul class="messages">
+        <ul class="messages" v-if="messages.length">
           <Message
             v-for="item in messages"
             :key="'message-' + item.id"
             :data="item"
           />
         </ul>
+        <EmptyChat v-if="!messages.length" />
       </v-col>
     </v-row>
 
@@ -19,9 +20,10 @@
 <script>
 import NewMessageInput from '@/components/NewMessageInput'
 import Message from '@/components/Message'
+import EmptyChat from '@/components/EmptyChat'
 
 export default {
-  components: { NewMessageInput, Message },
+  components: { NewMessageInput, Message, EmptyChat },
   data() {
     return {
       lastMessageAt: null // use for "scroll to the end"
