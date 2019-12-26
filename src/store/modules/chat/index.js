@@ -40,7 +40,10 @@ export default {
   state: {
     messages: [],
     channels: [],
-    activeChannelId: null
+    activeChannelId: null,
+    dataLoaded: {
+      messages: false
+    }
   },
   getters: {
     channels: state => state.channels, // TODO: return only user's challens

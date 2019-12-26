@@ -39,7 +39,7 @@ export default {
   computed: {
     activeChannel: {
       get: function() {
-        return this.$store.state.chat.activeChannel
+        return this.$store.state.chat.activeChannelId
       },
       set: function(id) {
         this.$store.dispatch('chat/setActiveChannel', { id }).then(() => {

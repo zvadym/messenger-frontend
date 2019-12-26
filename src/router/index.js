@@ -13,6 +13,11 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: loadView('Login')
+    },
+    {
       path: '/',
       component: loadView('Base'),
       children: [
@@ -39,11 +44,6 @@ const router = new Router({
           meta: {
             auth: true
           }
-        },
-        {
-          path: '/login',
-          name: 'login',
-          component: loadView('Login')
         }
       ]
     }

@@ -38,6 +38,9 @@ export default {
     }
   },
   watch: {
+    $route: function() {
+      console.log('New channel selected. Refetch data')
+    },
     messages: function(newVal) {
       const newMsg = newVal[newVal.length - 1]
 
@@ -59,6 +62,13 @@ export default {
     }
   },
   mounted: function() {
+    // TODO: is it call each time I change channel?
+
+    //
+    // https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
+    //
+    console.log('Channel mounted')
+
     // Check/set active channel
     if (this.$route.params.id) {
       this.$store.dispatch('chat/setActiveChannel', {
