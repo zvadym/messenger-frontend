@@ -8,7 +8,7 @@ import users from './modules/users/index'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  strict: process.env.NODE_ENV !== 'production',
+  strict: true,
   modules: {
     chat,
     users

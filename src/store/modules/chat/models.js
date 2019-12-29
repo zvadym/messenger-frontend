@@ -2,13 +2,14 @@ import BaseModel from '@/store/models'
 
 export class MessageModel extends BaseModel {
   fields() {
-    return ['id', 'channelId', 'authorId', 'message', 'createdAt']
+    return ['id', 'isNotice', 'authorId', 'message', 'createdAt']
   }
 
   defaults() {
     return {
       id: this.guid(),
-      createdAt: Date.now()
+      createdAt: Date.now(),
+      isNotice: false
     }
   }
 }

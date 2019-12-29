@@ -3,11 +3,10 @@
     <v-row no-gutters>
       <v-col cols="12">
         <ul class="messages" v-if="messages.length">
-          <Message
-            v-for="item in messages"
-            :key="'message-' + item.id"
-            :data="item"
-          />
+          <div v-for="item in messages" :key="'message-' + item.id">
+            <Notice v-if="item.isNotice" :data="item" />
+            <Message v-else :data="item" />
+          </div>
         </ul>
         <EmptyChat v-if="!messages.length" />
       </v-col>
@@ -20,10 +19,11 @@
 <script>
 import NewMessageInput from '@/components/NewMessageInput'
 import Message from '@/components/Message'
+import Notice from '@/components/Notice'
 import EmptyChat from '@/components/EmptyChat'
 
 export default {
-  components: { NewMessageInput, Message, EmptyChat },
+  components: { NewMessageInput, Message, Notice, EmptyChat },
   data() {
     return {
       lastMessageAt: null // use for "scroll to the end"
@@ -39,7 +39,7 @@ export default {
   },
   watch: {
     $route: function() {
-      console.log('New channel selected. Refetch data')
+      console.log('TODO: New channel selected. Refetch data')
     },
     messages: function(newVal) {
       const newMsg = newVal[newVal.length - 1]
@@ -67,7 +67,6 @@ export default {
     //
     // https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
     //
-    console.log('Channel mounted')
 
     // Check/set active channel
     if (this.$route.params.id) {
@@ -80,9 +79,6 @@ export default {
       // Select the first channel
       this.$store.dispatch('chat/setDefaultActiveChannel')
     }
-
-    // firebase sync
-    this.$store.dispatch('chat/firebaseMessageBind').then(this.scrollToBottom)
   }
 }
 </script>

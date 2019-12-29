@@ -22,7 +22,8 @@
     <v-list-item-group v-model="activeChannel" color="primary">
       <v-list-item v-for="item in channels" :key="item.id" :value="item.id">
         <v-list-item-icon>
-          <v-icon>mdi-circle-medium</v-icon>
+          <v-icon size="16" v-if="item.isPrivate">mdi-account-lock</v-icon>
+          <v-icon size="24" v-else>mdi-circle-medium</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>

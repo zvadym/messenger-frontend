@@ -36,9 +36,17 @@ export default {
     })
 
     // Bind channels
-    // TODO: bind only user's channels
     this.$store.dispatch('chat/firebaseChannelBind').then(() => {
-      this.channelsLoaded = true
+      // Bind messages for each channel
+      let res = []
+      this.$store.state.chat.channels.forEach(channel => {
+        res.push(this.$store.dispatch('chat/firebaseMessageBind', { channel }))
+      })
+
+      // Wait for channels data
+      Promise.all(res).then(() => {
+        this.channelsLoaded = true
+      })
     })
   }
 }
