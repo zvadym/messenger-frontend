@@ -1,6 +1,6 @@
 <template>
-  <li class="item mx-0 my-3">
-    <div class="message body-2 primary white--text">
+  <li class="item d-flex justify-center">
+    <div class="message purple lighten-2 elevation-3 white--text px-4 mx-auto">
       {{ data.message }}
     </div>
     <div class="clearfix"></div>
@@ -15,4 +15,11 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="sass" scoped>
+.item
+  .message
+    border-radius: 12px
+
+  .clearfix
+    clear: both
+</style>
