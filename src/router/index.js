@@ -20,30 +20,27 @@ const router = new Router({
     {
       path: '/',
       component: loadView('Base'),
+      meta: { authRequired: true },
       children: [
         {
           path: '',
           name: 'home',
-          component: loadView('Channel'),
-          meta: {
-            auth: true
-          }
+          component: loadView('Channel')
         },
         {
-          path: '/create-channel',
-          name: 'new-channel',
-          component: loadView('NewChannel'),
-          meta: {
-            auth: true
-          }
+          path: '/channel/create',
+          name: 'channel-create',
+          component: loadView('ChannelForm')
+        },
+        {
+          path: '/channel/:id/edit',
+          name: 'channel-edit',
+          component: loadView('ChannelForm')
         },
         {
           path: '/channel/:id',
           name: 'channel',
-          component: loadView('Channel'),
-          meta: {
-            auth: true
-          }
+          component: loadView('Channel')
         }
       ]
     }
@@ -51,7 +48,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.auth)) {
+  if (to.matched.some(record => record.meta.authRequired)) {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         next()
