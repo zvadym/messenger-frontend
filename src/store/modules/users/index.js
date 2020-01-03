@@ -32,6 +32,7 @@ export default {
   },
   getters: {
     getById: state => id => state.users.find(item => item.id === id),
+    getByName: state => name => state.users.find(item => item.name === name),
     getAuthUser: (state, getters) =>
       state.authUserId && getters.getById(state.authUserId)
   },

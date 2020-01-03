@@ -13,7 +13,7 @@
           absolute
           right
           outlined
-          :to="{ name: 'new-channel' }"
+          :to="{ name: 'channel-create' }"
           >new</v-btn
         >
       </v-list-item-title>

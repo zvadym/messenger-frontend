@@ -62,12 +62,6 @@ export default {
     }
   },
   mounted: function() {
-    // TODO: is it call each time I change channel?
-
-    //
-    // https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-after-navigation
-    //
-
     // Check/set active channel
     if (this.$route.params.id) {
       this.$store.dispatch('chat/setActiveChannel', {

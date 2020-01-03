@@ -14,6 +14,10 @@ export default {
   firebaseChannelCreate: firestoreAction((context, channel) => {
     return channelsRef.doc(channel.id).set(channel)
   }),
+  firebaseChannelUpdate: firestoreAction((context, channel) => {
+    // FIXME: Check that only "creator" can update channel's data
+    return channelsRef.doc(channel.id).set(channel)
+  }),
   firebaseChannelBind: firestoreAction(({ dispatch, bindFirestoreRef }) => {
     return bindFirestoreRef('channels', channelsRef, {
       serialize: snapshot => {

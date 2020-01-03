@@ -33,14 +33,18 @@
     </v-navigation-drawer>
 
     <v-app-bar app absolute clipped-left>
-      <v-app-bar-nav-icon
-        v-if="user"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-      <v-toolbar-title v-if="activeChannel"
-        >#{{ activeChannel.title }}
-      </v-toolbar-title>
-      <v-toolbar-title v-else>Odin chats</v-toolbar-title>
+      <v-app-bar-nav-icon v-if="user" @click.stop="drawer = !drawer" />
+      <template v-if="activeChannel">
+        <v-toolbar-title>#{{ activeChannel.title }} </v-toolbar-title>
+        <v-btn
+          icon
+          absolute
+          right
+          :to="{ name: 'channel-edit', params: { id: activeChannel.id } }"
+        >
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </template>
     </v-app-bar>
   </div>
 </template>
