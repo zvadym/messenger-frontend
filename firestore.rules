@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      // Deny everything by default
+      //allow read, write: if false;
+      // FIXME:
+      allow read, write
+    }
+    match /users/{uId} {
+      allow create: if request.auth.uid == uId;
+      allow read: if isSignedIn();
+      allow update: if isSignedIn() && uId == request.auth.uid;
+    }
+    match /channels/{channelId} {
+      match /messages/{messageId} {
+      	allow create, read: if isSignedIn() && (isPublicChannel() || isMember());
+        allow update, delete: if isSignedIn() && isAuthor();
+      }
+        
+      allow create: if isSignedIn();
+      allow read: if isSignedIn() && (isPublicChannel() || isMember());
+      allow update, delete: if isSignedIn() && isAuthor();
+      
+      function channelData() {
+      	return get(/databases/$(database)/documents/channels/$(channelId)).data
+      }
+      function isPublicChannel() {
+        return channelData().isPrivate == false
+      }
+      function isMember() {
+        return request.auth.uid in channelData().memberIds
+      }
+      function isAuthor() {
+        return channelData().authorId == request.auth.uid
+      }
+    }
+    function isSignedIn() {
+      return request.auth != null;
+    }
+  }
+}
