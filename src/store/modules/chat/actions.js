@@ -34,7 +34,10 @@ export default {
       const channel = new ChannelModel({
         title: payload.title,
         authorId: user.id,
-        memberIds: [rootState.users.authUserId, ...payload.invitedUsers],
+        memberIds: [
+          rootState.users.authUserId,
+          ...(payload.invitedUsers || [])
+        ],
         isPrivate: payload.isPrivate
       })
 
