@@ -1,10 +1,10 @@
 import _ from 'lodash'
 import { MessageModel, ChannelModel } from './models'
-import firebaseActions from './firebaseActions'
+// import backendActions from './backendActions'
 import { getChannelMessagesStateLabel } from './utils'
 
 export default {
-  ...firebaseActions,
+  // ...backendActions,
 
   addMessage({ dispatch, state, rootState }, payload) {
     const message = new MessageModel({

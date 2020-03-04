@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import firebase from '@/services/firebase/index'
 import ChannelsList from './ChannelsList'
 import UserAvatar from './UserAvatar'
 
@@ -73,8 +72,7 @@ export default {
       this.drawer = false
     },
     signOut() {
-      firebase.auth().signOut()
-      this.$store.dispatch('users/setUser', null)
+      this.$store.dispatch('auth/logout')
     }
   }
 }

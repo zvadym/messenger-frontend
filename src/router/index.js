@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import firebase from '@/services/firebase/index'
+import store from '@/store/index'
 
 Vue.use(Router)
 
@@ -49,15 +49,14 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.authRequired)) {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        next()
-      } else {
-        next({
-          name: 'login'
-        })
-      }
-    })
+    if (!store.getters['auth/isAuthenticated']) {
+      next({
+        name: 'login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
   } else {
     next()
   }

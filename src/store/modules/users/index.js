@@ -1,28 +1,6 @@
-import { firestoreAction } from 'vuexfire'
 import { UserModel } from './models'
-import { usersRef } from '@/services/firebase/index'
 
 export const SET_USER = 'SET_USER'
-
-const firebaseActions = {
-  firebaseCreate: firestoreAction((context, { user }) => {
-    return usersRef.doc(user.id).set(user)
-  }),
-  firebaseBind: firestoreAction(({ bindFirestoreRef }) => {
-    return bindFirestoreRef('users', usersRef, {
-      serialize: snapshot => {
-        // Wrap data into the model to set all required fields
-        return new UserModel({
-          ...snapshot.data()
-        })
-      },
-      reset: false
-    })
-  }),
-  updateActionAt: firestoreAction((context, { user }) => {
-    return usersRef.doc(user.id).update({ lastActionAt: Date.now() })
-  })
-}
 
 export default {
   namespaced: true,
@@ -37,7 +15,6 @@ export default {
       state.authUserId && getters.getById(state.authUserId)
   },
   actions: {
-    ...firebaseActions,
     setAuthUser({ commit, getters, dispatch }, payload) {
       const userId = payload && payload.uid
       commit(SET_USER, userId)
@@ -52,6 +29,9 @@ export default {
         })
         dispatch('firebaseCreate', { user: user.toDict() })
       }
+    },
+    updateActionAt({ user }) {
+      return usersRef.doc(user.id).update({ lastActionAt: Date.now() })
     }
   },
   mutations: {

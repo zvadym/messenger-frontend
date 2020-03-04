@@ -1,34 +1,7 @@
-# chat
+## STEPS
 
-## Project setup
-```
-npm install
-```
+- [ ] Load data "page" by "page"
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## TODO
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [ ] Loading with https://loading.io/button/
