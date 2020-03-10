@@ -25,10 +25,13 @@ export default {
             router.push({ name: 'home' })
           })
       })
-      .catch(() => {}) // See axios config for basic error handling
+      .catch(error => {
+        throw error
+        // (!) Also see axios config for basic error handling
+      })
   },
   logout({ commit, state }) {
-    axios
+    return axios
       .post(process.env.VUE_APP_API_LOGOUT_URL, {
         refresh: state.jwtRefresh
       })
@@ -38,7 +41,7 @@ export default {
         window.localStorage.removeItem('auth_refresh_token')
 
         bus.$emit('flash', 'Goodbye! Your session has ended.', 'success')
-        router.push({ name: 'Login' })
+        router.push({ name: 'login' })
       })
   },
   refresh({ commit, state }) {
@@ -57,7 +60,7 @@ export default {
       })
   },
   verify({ state }) {
-    axios
+    return axios
       .post(process.env.VUE_APP_API_VERIFY_URL, {
         token: state.jwtRefresh
       })
@@ -69,13 +72,15 @@ export default {
       })
   },
   updateAccessToken({ commit, dispatch }, token) {
-    commit('setAccessToken', token)
-
     // Refresh "access" token when it expires
-    return dispatch('setRefreshTimer', new Date(jwtDecode(token).exp * 1000))
+    dispatch('setRefreshTimer', new Date(jwtDecode(token).exp * 1000))
+
+    return commit('setAccessToken', token)
   },
-  updateRefreshToken({ commit }, token) {
-    commit('setRefreshToken', token)
+  updateRefreshToken({ dispatch, commit }, token) {
+    const tokenData = jwtDecode(token)
+    dispatch('users/setAuthUser', { id: tokenData.user_id }, { root: true })
+    return commit('setRefreshToken', token)
   },
   setRefreshTimer({ state, commit, dispatch }, expirationTime) {
     clearTimeout(state.timeoutId)
@@ -85,7 +90,7 @@ export default {
       dispatch('refresh')
     }, expirationTime - new Date())
 
-    commit('updateTimeoutId', timeoutId)
+    return commit('updateTimeoutId', timeoutId)
   },
   tryAutoLogin({ commit, dispatch }) {
     const refreshToken = window.localStorage.getItem('auth_refresh_token')
@@ -103,7 +108,7 @@ export default {
       return
     }
 
-    dispatch('updateRefreshToken', refreshToken).then(() => {
+    return dispatch('updateRefreshToken', refreshToken).then(() => {
       return dispatch('refresh').then(
         () => {
           bus.$emit('flash', 'Autologin => success')

@@ -1,6 +1,6 @@
 import { UserModel } from './models'
 export const ADD_USER = 'ADD_USER'
-export const SET_USER = 'SET_USER' // TODO: rename to ... SET_AUTH_USER
+export const SET_AUTH_USER = 'SET_AUTH_USER'
 
 export default {
   namespaced: true,
@@ -28,15 +28,14 @@ export default {
       }
     },
     setAuthUser({ commit }, payload) {
-      const userId = payload && payload.uid
-      commit(SET_USER, userId)
+      commit(SET_AUTH_USER, payload.id)
     },
     updateActionAt() {
       console.log('TODO: updateActionAt')
     }
   },
   mutations: {
-    [SET_USER](state, uid) {
+    [SET_AUTH_USER](state, uid) {
       state.authUserId = uid
     },
     [ADD_USER](state, user) {

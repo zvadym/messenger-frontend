@@ -1,7 +1,7 @@
 <template>
   <div v-show="show" :class="level" class="alert" role="alert">
     <div class="dismiss" @click="dismiss">
-      <icon name="times" class="float-right cursor-pointer mx-2" />
+      <v-icon name="times" class="float-right cursor-pointer mx-2" />
     </div>
     {{ body }}
   </div>

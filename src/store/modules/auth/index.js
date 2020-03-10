@@ -10,8 +10,7 @@ export default {
 
     timeoutId: null,
 
-    userData: null,
-    formErrors: {}
+    userData: null
   },
   getters,
   actions,

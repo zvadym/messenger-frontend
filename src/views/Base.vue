@@ -11,14 +11,12 @@
         </div>
       </v-container>
     </v-content>
-    <flash-stack />
   </v-app>
 </template>
 
 <script>
 import Header from '@/components/Header'
 import UserIdle from '@/components/UserIdle' // detect user actions
-import FlashStack from '@/components/FlashStack'
 import ApiService from '@/services/api/index'
 
 export default {
@@ -29,7 +27,6 @@ export default {
   },
   computed: {},
   components: {
-    'flash-stack': FlashStack,
     Header,
     UserIdle
   },

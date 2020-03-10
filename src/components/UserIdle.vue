@@ -1,4 +1,6 @@
-<template> </template>
+<template>
+  <span />
+</template>
 <script>
 const TIMEOUT = 3 * 60 * 60 * 1000 // 3 min
 
@@ -25,7 +27,7 @@ export default {
   },
   methods: {
     updateUserStatus() {
-      this.$store.dispatch('users/updateActionAt', { user: this.user })
+      this.$store.dispatch('users/updateActionAt')
     }
   },
   onIdle() {

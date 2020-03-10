@@ -12,12 +12,6 @@ export default {
   updateTimeoutId(state, timeoutId) {
     state.timeoutId = timeoutId
   },
-  setFormErrors(state, errors) {
-    state.formErrors = errors
-  },
-  clearFormErrors(state) {
-    state.formErrors = {}
-  },
   setUserData(state, data) {
     state.userData = data
   },

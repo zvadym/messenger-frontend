@@ -1,7 +1,7 @@
 <template>
   <div class="avatar">
     <v-avatar size="30" :title="user.name">
-      <v-img :src="user.avatar" />
+      <!-- <v-img :src="user.avatar" /> -->
       <v-icon size="10" :color="color" class="network">mdi-brightness-1</v-icon>
     </v-avatar>
   </div>
