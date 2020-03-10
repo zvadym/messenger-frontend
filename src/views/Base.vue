@@ -35,7 +35,7 @@ export default {
       ApiService.getRooms()
         .then(data => {
           data.forEach(item => {
-            this.$store.dispatch('chat/addRoom', item)
+            this.$store.dispatch('messenger/addRoom', item)
           })
         })
         .then(() => {

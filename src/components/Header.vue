@@ -64,7 +64,7 @@ export default {
       return this.$store.getters['users/getAuthUser']
     },
     activeChannel() {
-      return this.$store.getters['chat/activeChannel']
+      return this.$store.getters['messenger/activeChannel']
     }
   },
   methods: {

@@ -40,17 +40,17 @@ export default {
   computed: {
     activeChannel: {
       get: function() {
-        return this.$store.state.chat.activeChannelId
+        return this.$store.state.messenger.activeChannelId
       },
       set: function(id) {
-        this.$store.dispatch('chat/setActiveChannel', { id }).then(() => {
+        this.$store.dispatch('messenger/setActiveChannel', { id }).then(() => {
           this.$router.push({ name: 'channel', params: { id } })
         })
         this.$emit('closeMenu')
       }
     },
     channels() {
-      return this.$store.getters['chat/channels']
+      return this.$store.getters['messenger/channels']
     }
   }
 }

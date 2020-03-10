@@ -12,7 +12,7 @@
         :rules="inputRules"
       ></v-text-field>
       <v-switch
-        label="private chat"
+        label="private room"
         hint="only invited members can join"
         v-model="isPrivate"
       />
@@ -122,7 +122,7 @@ export default {
   mounted() {
     const cid = this.$route.params.id
     if (cid) {
-      this.editedChannelData = this.$store.getters['chat/getById'](cid)
+      this.editedChannelData = this.$store.getters['messenger/getById'](cid)
       this.title = this.editedChannelData.title
       this.isPrivate = this.editedChannelData.isPrivate
       if (this.isPrivate) {
@@ -144,14 +144,14 @@ export default {
     },
     createChannel() {
       this.$store
-        .dispatch('chat/createChannel', {
+        .dispatch('messenger/createChannel', {
           title: this.title,
           isPrivate: this.isPrivate,
           invitedUsers: this.invitedUsers
         })
         .then(channel => {
           this.$store
-            .dispatch('chat/setActiveChannel', { id: channel.id })
+            .dispatch('messenger/setActiveChannel', { id: channel.id })
             .then(() => {
               this.$router.push({
                 name: 'channel',
@@ -162,7 +162,7 @@ export default {
     },
     editChannel() {
       this.$store
-        .dispatch('chat/updateChannel', {
+        .dispatch('messenger/updateChannel', {
           id: this.editedChannelData.id,
           title: this.title,
           isPrivate: this.isPrivate,

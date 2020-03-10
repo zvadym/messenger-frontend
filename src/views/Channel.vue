@@ -1,5 +1,5 @@
 <template>
-  <v-container id="chat-area" fill-height>
+  <v-container id="messenger-area" fill-height>
     <v-row no-gutters>
       <v-col cols="12">
         <ul class="messages" v-if="messages.length">
@@ -8,7 +8,7 @@
             <Message v-else :data="item" />
           </div>
         </ul>
-        <EmptyChat v-if="!messages.length" />
+        <EmptyRoom v-if="!messages.length" />
       </v-col>
     </v-row>
 
@@ -20,10 +20,10 @@
 import NewMessageInput from '@/components/NewMessageInput'
 import Message from '@/components/Message'
 import Notice from '@/components/Notice'
-import EmptyChat from '@/components/EmptyChat'
+import EmptyRoom from '@/components/EmptyRoom'
 
 export default {
-  components: { NewMessageInput, Message, Notice, EmptyChat },
+  components: { NewMessageInput, Message, Notice, EmptyRoom },
   data() {
     return {
       lastMessageAt: null // use for "scroll to the end"
@@ -31,10 +31,10 @@ export default {
   },
   computed: {
     channel() {
-      return this.$store.getters['chat/activeChannel']
+      return this.$store.getters['messenger/activeChannel']
     },
     messages() {
-      return this.$store.getters['chat/activeChannelMessages']
+      return this.$store.getters['messenger/activeChannelMessages']
     }
   },
   watch: {
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     createMessage(message) {
-      this.$store.dispatch('chat/addMessage', { message })
+      this.$store.dispatch('messenger/addMessage', { message })
     },
     scrollToBottom() {
       document
@@ -64,21 +64,21 @@ export default {
   mounted: function() {
     // Check/set active channel
     if (this.$route.params.id) {
-      this.$store.dispatch('chat/setActiveChannel', {
+      this.$store.dispatch('messenger/setActiveChannel', {
         id: this.$route.params.id
       })
     }
 
     if (!this.channel) {
       // Select the first channel
-      this.$store.dispatch('chat/setDefaultActiveChannel')
+      this.$store.dispatch('messenger/setDefaultActiveChannel')
     }
   }
 }
 </script>
 
 <style scoped>
-#chat-area {
+#messenger-area {
   align-items: flex-start;
 }
 .messages {
