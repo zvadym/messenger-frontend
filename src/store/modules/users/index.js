@@ -22,7 +22,8 @@ export default {
           new UserModel({
             id: payload.id,
             email: payload.email,
-            name: payload.name
+            firstName: payload.first_name,
+            lastName: payload.last_name
           })
         )
       }
