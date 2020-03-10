@@ -19,23 +19,32 @@
 import Header from '@/components/Header'
 import UserIdle from '@/components/UserIdle' // detect user actions
 import FlashStack from '@/components/FlashStack'
+import ApiService from '@/services/api/index'
 
 export default {
   data() {
     return {
-      channelsLoaded: false,
-      usersLoaded: false
+      loaded: false
     }
   },
-  computed: {
-    loaded() {
-      return this.channelsLoaded && this.usersLoaded
-    }
-  },
+  computed: {},
   components: {
     'flash-stack': FlashStack,
     Header,
     UserIdle
+  },
+  created() {
+    if (!this.channelsLoaded) {
+      ApiService.getRooms()
+        .then(data => {
+          data.forEach(item => {
+            this.$store.dispatch('chat/addRoom', item)
+          })
+        })
+        .then(() => {
+          this.loaded = true
+        })
+    }
   }
 }
 </script>

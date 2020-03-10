@@ -34,7 +34,7 @@ customized.interceptors.response.use(
   error => {
     if (error.response.status === 401) {
       store.commit('auth/clearAuthCredentials')
-      router.push({ name: 'Login' }).catch(error => {})
+      router.push({ name: 'Login' }) // .catch(error => {})
     }
     if (error.response.status > 400) {
       if (Object.prototype.hasOwnProperty.call(error.response.data, 'detail')) {

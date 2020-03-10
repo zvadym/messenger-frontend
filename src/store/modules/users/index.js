@@ -1,6 +1,6 @@
 import { UserModel } from './models'
-
-export const SET_USER = 'SET_USER'
+export const ADD_USER = 'ADD_USER'
+export const SET_USER = 'SET_USER' // TODO: rename to ... SET_AUTH_USER
 
 export default {
   namespaced: true,
@@ -15,28 +15,32 @@ export default {
       state.authUserId && getters.getById(state.authUserId)
   },
   actions: {
-    setAuthUser({ commit, getters, dispatch }, payload) {
-      const userId = payload && payload.uid
-      commit(SET_USER, userId)
-
-      // A new users must be added to the firebase store.
-      if (userId && !getters.getById(userId)) {
-        const user = new UserModel({
-          id: payload.uid,
-          name: payload.displayName,
-          email: payload.email,
-          avatar: payload.photoURL
-        })
-        dispatch('firebaseCreate', { user: user.toDict() })
+    addUser({ commit, getters }, payload) {
+      if (!getters['getById'](payload.id)) {
+        commit(
+          ADD_USER,
+          new UserModel({
+            id: payload.id,
+            email: payload.email,
+            name: payload.name
+          })
+        )
       }
     },
-    updateActionAt({ user }) {
-      return usersRef.doc(user.id).update({ lastActionAt: Date.now() })
+    setAuthUser({ commit }, payload) {
+      const userId = payload && payload.uid
+      commit(SET_USER, userId)
+    },
+    updateActionAt() {
+      console.log('TODO: updateActionAt')
     }
   },
   mutations: {
     [SET_USER](state, uid) {
       state.authUserId = uid
+    },
+    [ADD_USER](state, user) {
+      state.users.push(user)
     }
   }
 }

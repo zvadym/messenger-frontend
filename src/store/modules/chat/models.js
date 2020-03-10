@@ -14,7 +14,7 @@ export class MessageModel extends BaseModel {
   }
 }
 
-export class ChannelModel extends BaseModel {
+export class RoomModel extends BaseModel {
   fields() {
     return [
       'id',

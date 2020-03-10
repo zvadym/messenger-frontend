@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import IdleVue from 'idle-vue'
-
 import vuetify from '@/plugins/vuetify'
 import router from '@/router'
 import store from '@/store'

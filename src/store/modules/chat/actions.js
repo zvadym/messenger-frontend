@@ -1,11 +1,33 @@
 import _ from 'lodash'
-import { MessageModel, ChannelModel } from './models'
-// import backendActions from './backendActions'
+import { MessageModel, RoomModel } from './models'
 import { getChannelMessagesStateLabel } from './utils'
+import { createRoom } from '@/services/api/index'
 
 export default {
-  // ...backendActions,
+  addRoom({ commit, dispatch }, payload) {
+    // Add member to vuex
+    dispatch('users/addUser', payload.created_by, { root: true })
+    payload.members.forEach(item =>
+      dispatch('users/addUser', item, { root: true })
+    )
 
+    commit(
+      'addRoom',
+      new RoomModel({
+        id: payload.id,
+        title: payload.title,
+        authorId: payload.created_by.id,
+        memberIds: payload.members.map(item => item.id),
+        createdAt: Date.parse(payload.created_dt),
+        lastMessageAt: Date.parse(
+          (payload.lastMessageAt && payload.lastMessageAt.created_dt) ||
+            payload.created_dt
+        )
+      })
+    )
+  },
+
+  // TODO: old code
   addMessage({ dispatch, state, rootState }, payload) {
     const message = new MessageModel({
       message: payload.message,
@@ -31,7 +53,7 @@ export default {
   createChannel({ dispatch, rootState, rootGetters }, payload) {
     return new Promise(resolve => {
       const user = rootGetters['users/getAuthUser']
-      const channel = new ChannelModel({
+      const channel = new RoomModel({
         title: payload.title,
         authorId: user.id,
         memberIds: [
@@ -41,7 +63,7 @@ export default {
         isPrivate: payload.isPrivate
       })
 
-      dispatch('firebaseChannelCreate', {
+      createRoom({
         ...channel.toDict()
       })
         .then(() => {
