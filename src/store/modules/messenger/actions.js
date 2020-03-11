@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { MessageModel, RoomModel } from './models'
-import { getChannelMessagesStateLabel } from './utils'
+import { getRoomMessagesStateLabel } from './utils'
 import { createRoom } from '@/services/api/index'
 
 export default {
@@ -35,25 +35,25 @@ export default {
     })
 
     dispatch('firebaseMessageCreate', {
-      channelId: state.activeChannelId,
+      roomId: state.activeRoomId,
       message: message.toDict()
     })
   },
-  addNotice({ dispatch }, { message, channel }) {
+  addNotice({ dispatch }, { message, room }) {
     const notice = new MessageModel({
       message,
       isNotice: true
     })
 
     dispatch('firebaseMessageCreate', {
-      channelId: channel.id,
+      roomId: room.id,
       message: notice.toDict()
     })
   },
-  createChannel({ dispatch, rootState, rootGetters }, payload) {
+  createRoom({ dispatch, rootState, rootGetters }, payload) {
     return new Promise(resolve => {
       const user = rootGetters['users/getAuthUser']
-      const channel = new RoomModel({
+      const room = new RoomModel({
         title: payload.title,
         authorId: user.id,
         memberIds: [
@@ -64,103 +64,103 @@ export default {
       })
 
       createRoom({
-        ...channel.toDict()
+        ...room.toDict()
       })
         .then(() => {
           // Add "created" notice
           dispatch('addNotice', {
-            message: `Channel was created by ${user.name}`,
-            channel
+            message: `Room was created by ${user.name}`,
+            room
           })
         })
         .then(() => {
-          resolve(channel)
+          resolve(room)
         })
     })
   },
-  updateChannel({ dispatch, rootGetters, getters }, payload) {
-    const channel = { ...getters.getById(payload.id) }
+  updateRoom({ dispatch, rootGetters, getters }, payload) {
+    const room = { ...getters.getById(payload.id) }
     const user = rootGetters['users/getAuthUser']
 
     let changes = []
 
     return new Promise(resolve => {
-      if (channel.title !== payload.title) {
+      if (room.title !== payload.title) {
         changes.push(
-          `Title was changed from "${channel.title}" to "${payload.title}" by ${user.name}`
+          `Title was changed from "${room.title}" to "${payload.title}" by ${user.name}`
         )
-        channel.title = payload.title
+        room.title = payload.title
       }
 
-      if (channel.isPrivate !== payload.isPrivate) {
+      if (room.isPrivate !== payload.isPrivate) {
         let notice = payload.isPrivate
-          ? 'Channel is private from now'
-          : 'Channel is public from now'
+          ? 'Room is private from now'
+          : 'Room is public from now'
         notice += ` (changed by ${user.name})`
         changes.push(notice)
-        channel.isPrivate = payload.isPrivate
+        room.isPrivate = payload.isPrivate
       }
 
       if (payload.isPrivate) {
-        if (!_.has(payload.invitedUsers, channel.authorId)) {
-          payload.invitedUsers.push(channel.authorId)
+        if (!_.has(payload.invitedUsers, room.authorId)) {
+          payload.invitedUsers.push(room.authorId)
         }
 
         // deletedUsers
-        _.difference(channel.memberIds, payload.invitedUsers).forEach(uId => {
+        _.difference(room.memberIds, payload.invitedUsers).forEach(uId => {
           const _user = rootGetters['users/getById'](uId)
           changes.push(
-            `"${_user.name}" was removed from this channel (by ${user.name})`
+            `"${_user.name}" was removed from this room (by ${user.name})`
           )
         })
 
         // newUsers
-        _.difference(payload.invitedUsers, channel.memberIds).forEach(uId => {
+        _.difference(payload.invitedUsers, room.memberIds).forEach(uId => {
           const _user = rootGetters['users/getById'](uId)
           changes.push(
-            `"${_user.name}" was added to this channel (by ${user.name})`
+            `"${_user.name}" was added to this room (by ${user.name})`
           )
         })
       } else {
         payload.invitedUsers = []
       }
 
-      channel.memberIds = payload.invitedUsers
+      room.memberIds = payload.invitedUsers
 
-      dispatch('firebaseChannelUpdate', {
-        ...channel
+      dispatch('firebaseC-hannelUpdate', {
+        ...room
       })
         .then(() => {
           changes.forEach(message => {
             dispatch('addNotice', {
               message,
-              channel
+              room
             })
           })
         })
         .then(() => {
-          resolve(channel)
+          resolve(room)
         })
     })
   },
-  setActiveChannel({ commit }, payload) {
-    commit('setActiveChannel', payload.id)
+  setActiveRoom({ commit }, payload) {
+    commit('setActiveRoom', payload.id)
   },
-  setDefaultActiveChannel({ commit, getters, dispatch }) {
-    const channels = getters.channels
+  setDefaultActiveRoom({ commit, getters, dispatch }) {
+    const rooms = getters.rooms
 
-    if (!channels.length) {
-      // Create a new channel and set it as "Active"
-      dispatch('createChannel', { title: 'master', isPrivate: false }).then(
-        channel => {
-          commit('setActiveChannel', channel.id)
+    if (!rooms.length) {
+      // Create a new room and set it as "Active"
+      dispatch('createRoom', { title: 'master', isPrivate: false }).then(
+        room => {
+          commit('setActiveRoom', room.id)
         }
       )
     } else {
-      commit('setActiveChannel', channels[0].id)
+      commit('setActiveRoom', rooms[0].id)
     }
   },
-  createMessagesRoot({ commit }, { channel }) {
-    commit('createMessagesRoot', getChannelMessagesStateLabel(channel))
+  createMessagesRoot({ commit }, { room }) {
+    commit('createMessagesRoot', getRoomMessagesStateLabel(room))
   }
 }

@@ -30,16 +30,16 @@ export default {
     }
   },
   computed: {
-    channel() {
-      return this.$store.getters['messenger/activeChannel']
+    room() {
+      return this.$store.getters['messenger/activeRoom']
     },
     messages() {
-      return this.$store.getters['messenger/activeChannelMessages']
+      return this.$store.getters['messenger/activeRoomMessages']
     }
   },
   watch: {
     $route: function() {
-      console.log('TODO: New channel selected. Refetch data')
+      console.log('TODO: New room selected. Refetch data')
     },
     messages: function(newVal) {
       const newMsg = newVal[newVal.length - 1]
@@ -62,16 +62,16 @@ export default {
     }
   },
   mounted: function() {
-    // Check/set active channel
+    // Check/set active room
     if (this.$route.params.id) {
-      this.$store.dispatch('messenger/setActiveChannel', {
+      this.$store.dispatch('messenger/setActiveRoom', {
         id: this.$route.params.id
       })
     }
 
-    if (!this.channel) {
-      // Select the first channel
-      this.$store.dispatch('messenger/setDefaultActiveChannel')
+    if (!this.room) {
+      // Select the first room
+      this.$store.dispatch('messenger/setDefaultActiveRoom')
     }
   }
 }

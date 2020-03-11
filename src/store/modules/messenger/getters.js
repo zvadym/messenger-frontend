@@ -1,8 +1,6 @@
 export default {
-  channels: state => state.channels,
-  getById: state => cid => state.channels.find(c => c.id === cid),
-  activeChannel: state =>
-    state.channels.find(i => i.id === state.activeChannelId),
-  activeChannelMessages: state =>
-    state[`messages[${state.activeChannelId}]`] || []
+  rooms: state => state.rooms,
+  getById: state => cid => state.rooms.find(c => c.id === cid),
+  activeRoom: state => state.rooms.find(i => i.id === state.activeRoomId),
+  activeRoomMessages: state => state[`messages[${state.activeRoomId}]`] || []
 }

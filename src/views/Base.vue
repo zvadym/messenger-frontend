@@ -31,7 +31,7 @@ export default {
     UserIdle
   },
   created() {
-    if (!this.channelsLoaded) {
+    if (!this.roomsLoaded) {
       ApiService.getRooms()
         .then(data => {
           data.forEach(item => {

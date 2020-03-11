@@ -5,8 +5,8 @@ import mutations from './mutations'
 export default {
   namespaced: true,
   state: {
-    channels: [],
-    activeChannelId: null,
+    rooms: [],
+    activeRoomId: null,
     dataLoaded: {
       messages: false
     }

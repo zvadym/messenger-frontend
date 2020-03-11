@@ -29,18 +29,18 @@
       </template>
 
       <v-divider />
-      <ChannelsList @closeMenu="closeMenu" />
+      <RoomsList @closeMenu="closeMenu" />
     </v-navigation-drawer>
 
     <v-app-bar app absolute clipped-left>
       <v-app-bar-nav-icon v-if="user" @click.stop="drawer = !drawer" />
-      <template v-if="activeChannel">
-        <v-toolbar-title>#{{ activeChannel.title }} </v-toolbar-title>
+      <template v-if="activeRoom">
+        <v-toolbar-title>#{{ activeRoom.title }} </v-toolbar-title>
         <v-btn
           icon
           absolute
           right
-          :to="{ name: 'channel-edit', params: { id: activeChannel.id } }"
+          :to="{ name: 'room-edit', params: { id: activeRoom.id } }"
         >
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
@@ -50,12 +50,12 @@
 </template>
 
 <script>
-import ChannelsList from './ChannelsList'
+import RoomsList from './RoomsList'
 import UserAvatar from './UserAvatar'
 
 export default {
   name: 'Header',
-  components: { ChannelsList, UserAvatar },
+  components: { RoomsList, UserAvatar },
   data: () => ({
     drawer: null
   }),
@@ -63,8 +63,8 @@ export default {
     user() {
       return this.$store.getters['users/getAuthUser']
     },
-    activeChannel() {
-      return this.$store.getters['messenger/activeChannel']
+    activeRoom() {
+      return this.$store.getters['messenger/activeRoom']
     }
   },
   methods: {

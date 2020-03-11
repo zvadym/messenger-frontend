@@ -5,7 +5,7 @@
         <v-icon>mdi-pound</v-icon>
       </v-list-item-icon>
       <v-list-item-title>
-        Channels
+        Rooms
         <v-btn
           color="grey darken-2"
           dark
@@ -13,14 +13,14 @@
           absolute
           right
           outlined
-          :to="{ name: 'channel-create' }"
+          :to="{ name: 'room-create' }"
           >new</v-btn
         >
       </v-list-item-title>
     </v-list-item>
 
-    <v-list-item-group v-model="activeChannel" color="primary">
-      <v-list-item v-for="item in channels" :key="item.id" :value="item.id">
+    <v-list-item-group v-model="activeRoom" color="primary">
+      <v-list-item v-for="item in rooms" :key="item.id" :value="item.id">
         <v-list-item-icon>
           <v-icon size="16" v-if="item.isPrivate">mdi-account-lock</v-icon>
           <v-icon size="24" v-else>mdi-circle-medium</v-icon>
@@ -36,21 +36,21 @@
 
 <script>
 export default {
-  name: 'ChannelsList',
+  name: 'RoomsList',
   computed: {
-    activeChannel: {
+    activeRoom: {
       get: function() {
-        return this.$store.state.messenger.activeChannelId
+        return this.$store.state.messenger.activeRoomId
       },
       set: function(id) {
-        this.$store.dispatch('messenger/setActiveChannel', { id }).then(() => {
-          this.$router.push({ name: 'channel', params: { id } })
+        this.$store.dispatch('messenger/setActiveRoom', { id }).then(() => {
+          this.$router.push({ name: 'room', params: { id } })
         })
         this.$emit('closeMenu')
       }
     },
-    channels() {
-      return this.$store.getters['messenger/channels']
+    rooms() {
+      return this.$store.getters['messenger/rooms']
     }
   }
 }

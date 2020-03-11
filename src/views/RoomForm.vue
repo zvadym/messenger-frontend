@@ -1,11 +1,11 @@
 <template>
   <v-card class="mx-auto" min-width="300" max-width="500" outlined>
-    <v-card-title>Create channel</v-card-title>
+    <v-card-title>Create room</v-card-title>
     <v-card-text>
       <v-text-field
         autofocus
         counter="20"
-        label="Channel name"
+        label="Room name"
         validate-on-blur
         v-model="title"
         ref="titleRef"
@@ -79,7 +79,7 @@ export default {
   components: { UserAvatar },
   data() {
     return {
-      editedChannelData: null,
+      editedRoomData: null,
       title: '',
       isPrivate: false,
       invitedUsers: [],
@@ -105,12 +105,12 @@ export default {
       )
     },
     submitButtonLabel() {
-      return this.editedChannelData === null ? 'Create' : 'Edit'
+      return this.editedRoomData === null ? 'Create' : 'Edit'
     },
     cancelButtonRoute() {
-      return this.editedChannelData === null
+      return this.editedRoomData === null
         ? { name: 'home' }
-        : { name: 'channel', params: { id: this.editedChannelData.id } }
+        : { name: 'room', params: { id: this.editedRoomData.id } }
     }
   },
   watch: {
@@ -122,11 +122,11 @@ export default {
   mounted() {
     const cid = this.$route.params.id
     if (cid) {
-      this.editedChannelData = this.$store.getters['messenger/getById'](cid)
-      this.title = this.editedChannelData.title
-      this.isPrivate = this.editedChannelData.isPrivate
+      this.editedRoomData = this.$store.getters['messenger/getById'](cid)
+      this.title = this.editedRoomData.title
+      this.isPrivate = this.editedRoomData.isPrivate
       if (this.isPrivate) {
-        this.invitedUsers = this.editedChannelData.memberIds.filter(
+        this.invitedUsers = this.editedRoomData.memberIds.filter(
           uid => uid !== this.currentUser.id
         )
       }
@@ -137,41 +137,41 @@ export default {
       if (!this.$refs['titleRef'].validate()) {
         return false
       }
-      if (this.editedChannelData === null) {
-        return this.createChannel()
+      if (this.editedRoomData === null) {
+        return this.createRoom()
       }
-      return this.editChannel()
+      return this.editRoom()
     },
-    createChannel() {
+    createRoom() {
       this.$store
-        .dispatch('messenger/createChannel', {
+        .dispatch('messenger/createRoom', {
           title: this.title,
           isPrivate: this.isPrivate,
           invitedUsers: this.invitedUsers
         })
-        .then(channel => {
+        .then(room => {
           this.$store
-            .dispatch('messenger/setActiveChannel', { id: channel.id })
+            .dispatch('messenger/setActiveRoom', { id: room.id })
             .then(() => {
               this.$router.push({
-                name: 'channel',
-                params: { id: channel.id }
+                name: 'room',
+                params: { id: room.id }
               })
             })
         })
     },
-    editChannel() {
+    editRoom() {
       this.$store
-        .dispatch('messenger/updateChannel', {
-          id: this.editedChannelData.id,
+        .dispatch('messenger/updateRoom', {
+          id: this.editedRoomData.id,
           title: this.title,
           isPrivate: this.isPrivate,
           invitedUsers: this.invitedUsers
         })
         .then(() => {
           this.$router.push({
-            name: 'channel',
-            params: { id: this.editedChannelData.id }
+            name: 'room',
+            params: { id: this.editedRoomData.id }
           })
         })
     },
@@ -180,17 +180,17 @@ export default {
       if (index >= 0) this.invitedUsers.splice(index, 1)
     },
     checkUniqTitle() {
-      const channel = this.$store.getters['users/getByName'](this.title)
+      const room = this.$store.getters['users/getByName'](this.title)
 
-      if (!channel) {
+      if (!room) {
         return true
       }
 
-      if (this.editedChannelData && this.editedChannelData.id === channel.id) {
+      if (this.editedRoomData && this.editedRoomData.id === room.id) {
         return true
       }
 
-      return 'This channel name is already used'
+      return 'This room name is already used'
     }
   }
 }

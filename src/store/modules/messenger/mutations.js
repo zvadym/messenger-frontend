@@ -2,10 +2,10 @@ import Vue from 'vue'
 
 export default {
   addRoom(state, data) {
-    state.channels.push(data)
+    state.rooms.push(data)
   },
-  setActiveChannel(state, id) {
-    state.activeChannelId = id
+  setActiveRoom(state, id) {
+    state.activeRoomId = id
   },
   createMessagesRoot(state, name) {
     Vue.set(state, name, [])

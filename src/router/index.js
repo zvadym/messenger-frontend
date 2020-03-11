@@ -25,22 +25,22 @@ const router = new Router({
         {
           path: '',
           name: 'home',
-          component: loadView('Channel')
+          component: loadView('Room')
         },
         {
-          path: '/channel/create',
-          name: 'channel-create',
-          component: loadView('ChannelForm')
+          path: '/room/create',
+          name: 'room-create',
+          component: loadView('RoomForm')
         },
         {
-          path: '/channel/:id/edit',
-          name: 'channel-edit',
-          component: loadView('ChannelForm')
+          path: '/room/:id/edit',
+          name: 'room-edit',
+          component: loadView('RoomForm')
         },
         {
-          path: '/channel/:id',
-          name: 'channel',
-          component: loadView('Channel')
+          path: '/room/:id',
+          name: 'room',
+          component: loadView('Room')
         }
       ]
     }
