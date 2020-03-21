@@ -17,7 +17,7 @@
 <script>
 import Header from '@/components/Header'
 import UserIdle from '@/components/UserIdle' // detect user actions
-import ApiService from '@/services/api/index'
+import api from '@/services/api/index'
 
 export default {
   data() {
@@ -32,7 +32,8 @@ export default {
   },
   created() {
     if (!this.roomsLoaded) {
-      ApiService.getRooms()
+      api
+        .getRooms()
         .then(data => {
           data.forEach(item => {
             this.$store.dispatch('messenger/addRoom', item)
