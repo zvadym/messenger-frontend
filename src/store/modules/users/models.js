@@ -32,6 +32,10 @@ export class UserModel extends BaseModel {
     return new Date(val)
   }
 
+  get fullName() {
+    return this.lastName
+  }
+
   static getById(id) {
     return new UserModel(store.getters['users/getById'](id) || {})
   }

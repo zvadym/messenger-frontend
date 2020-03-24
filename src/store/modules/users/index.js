@@ -10,7 +10,6 @@ export default {
   },
   getters: {
     getById: state => id => state.users.find(item => item.id === id),
-    getByName: state => name => state.users.find(item => item.name === name),
     getAuthUser: (state, getters) =>
       state.authUserId && getters.getById(state.authUserId),
     isLoading: state => id => state.usersLoading.find(item => item === id)
@@ -18,11 +17,7 @@ export default {
   actions: {
     addUser({ commit, getters }, userId) {
       if (!getters['getById'](userId) && !getters['isLoading'](userId)) {
-        commit('addToLoadingQueue', userId)
-
         api.getUserData(userId).then(payload => {
-          console.log('Loaded:', payload)
-
           commit(
             'addUser',
             new UserModel({

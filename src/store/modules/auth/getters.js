@@ -9,6 +9,6 @@ export default {
     return state.userData.email
   },
   userName(state) {
-    return state.userData.name
+    return state.userData.fullName
   }
 }

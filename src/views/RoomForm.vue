@@ -18,7 +18,7 @@
       />
       <v-autocomplete
         v-if="isPrivate"
-        v-model="invitedUsers"
+        v-model="members"
         :items="users"
         :loading="isUserLoading"
         chips
@@ -26,7 +26,7 @@
         color="blue-grey lighten-2"
         item-text="name"
         item-value="id"
-        label="Invited users..."
+        label="Members..."
         multiple
       >
         <template v-slot:selection="data">
@@ -40,7 +40,7 @@
             <v-avatar left>
               <UserAvatar :user="data.item" />
             </v-avatar>
-            {{ data.item.name }}
+            {{ data.item.fullName }}
           </v-chip>
         </template>
         <template v-slot:item="data">
@@ -48,7 +48,7 @@
             <UserAvatar :user="data.item" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title v-html="data.item.name"></v-list-item-title>
+            <v-list-item-title v-html="data.item.fullName"></v-list-item-title>
             <v-list-item-subtitle
               v-html="data.item.email"
             ></v-list-item-subtitle>
@@ -82,7 +82,7 @@ export default {
       editedRoomData: null,
       title: '',
       isPrivate: false,
-      invitedUsers: [],
+      members: [],
       disableSubmit: true,
       isUserLoading: false,
       inputRules: [
@@ -126,7 +126,7 @@ export default {
       this.title = this.editedRoomData.title
       this.isPrivate = this.editedRoomData.isPrivate
       if (this.isPrivate) {
-        this.invitedUsers = this.editedRoomData.memberIds.filter(
+        this.members = this.editedRoomData.memberIds.filter(
           uid => uid !== this.currentUser.id
         )
       }
@@ -147,7 +147,7 @@ export default {
         .dispatch('messenger/createRoom', {
           title: this.title,
           isPrivate: this.isPrivate,
-          invitedUsers: this.invitedUsers
+          members: this.members
         })
         .then(room => {
           this.$store
@@ -166,7 +166,7 @@ export default {
           id: this.editedRoomData.id,
           title: this.title,
           isPrivate: this.isPrivate,
-          invitedUsers: this.invitedUsers
+          members: this.members
         })
         .then(() => {
           this.$router.push({
@@ -176,11 +176,11 @@ export default {
         })
     },
     removeUser(item) {
-      const index = this.invitedUsers.indexOf(item.id)
-      if (index >= 0) this.invitedUsers.splice(index, 1)
+      const index = this.members.indexOf(item.id)
+      if (index >= 0) this.members.splice(index, 1)
     },
     checkUniqTitle() {
-      const room = this.$store.getters['users/getByName'](this.title)
+      const room = this.$store.getters['messenger/getByTitle'](this.title)
 
       if (!room) {
         return true

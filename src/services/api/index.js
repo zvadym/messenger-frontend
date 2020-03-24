@@ -2,10 +2,10 @@ import axios from '@/axios'
 
 const USER_DETAILS = 'user/details/{pk}/'
 const ROOMS_LIST = 'rooms/'
+const ROOM_DETAILS = 'rooms/{pk}/'
 
 export default {
   getUserData(id) {
-    console.log('getUserData', id)
     return axios.get(USER_DETAILS.replace('{pk}', id)).then(response => {
       return response.data
     })
@@ -16,7 +16,6 @@ export default {
     })
   },
   createRoom(instance) {
-    console.log('Create a new room', instance)
     return axios
       .post(ROOMS_LIST, {
         title: instance.title,
@@ -26,6 +25,14 @@ export default {
       .then(response => {
         return response.data
       })
+  },
+  updateRoom(instance) {
+    return axios.put(ROOM_DETAILS.replace('{pk}', instance.id), {
+      id: instance.id,
+      title: instance.title,
+      members: instance.members,
+      is_private: instance.isPrivate
+    })
   },
   addMessage() {}
 }

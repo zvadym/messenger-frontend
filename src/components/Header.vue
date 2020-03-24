@@ -8,7 +8,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ user.name }}</v-list-item-title>
+            <v-list-item-title>{{ user.fullName }}</v-list-item-title>
             <v-list-item-subtitle>
               {{ user.email }}
               <v-btn
