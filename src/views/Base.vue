@@ -17,7 +17,6 @@
 <script>
 import Header from '@/components/Header'
 import UserIdle from '@/components/UserIdle' // detect user actions
-import api from '@/services/api/index'
 
 export default {
   data() {
@@ -32,16 +31,9 @@ export default {
   },
   created() {
     if (!this.roomsLoaded) {
-      api
-        .getRooms()
-        .then(data => {
-          data.forEach(item => {
-            this.$store.dispatch('messenger/addRoom', item)
-          })
-        })
-        .then(() => {
-          this.loaded = true
-        })
+      this.$store.dispatch('messenger/loadRooms').then(() => {
+        this.loaded = true
+      })
     }
   }
 }

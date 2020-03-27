@@ -3,6 +3,13 @@ import { RoomModel } from './models'
 import api from '@/services/api/index'
 
 export default {
+  loadRooms({ dispatch }) {
+    return api.getRooms().then(data => {
+      data.forEach(item => {
+        dispatch('addRoom', item)
+      })
+    })
+  },
   // Add existing instance to vuex
   addRoom({ commit, dispatch }, payload) {
     // Add member to vuex
