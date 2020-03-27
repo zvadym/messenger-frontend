@@ -61,6 +61,10 @@ export default {
         this.$refs.form.reset()
       })
     }
+  },
+  mounted() {
+    // Reset store
+    this.$store.reset()
   }
 }
 </script>
