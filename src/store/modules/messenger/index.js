@@ -6,6 +6,7 @@ export default {
   namespaced: true,
   state: {
     rooms: [],
+    messages: [],
     activeRoomId: null,
     dataLoaded: {
       messages: false

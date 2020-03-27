@@ -24,6 +24,7 @@ export default class BaseModel {
 
   getFieldValue(field, modelData) {
     const methodName = `get_${field}_value`
+    const defaults = this.defaults()
 
     if (typeof this[methodName] === 'function') {
       return this[methodName](field, modelData)
@@ -31,8 +32,8 @@ export default class BaseModel {
 
     return modelData[field] !== undefined
       ? modelData[field]
-      : this.defaults()[field] !== undefined
-      ? this.defaults()[field]
+      : defaults[field] !== undefined
+      ? defaults[field]
       : null
   }
 

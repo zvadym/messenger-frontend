@@ -8,19 +8,6 @@ export default {
   ...messageActions,
 
   // TODO: old code
-  addMessage({ dispatch, state, rootState }, payload) {
-    const message = new MessageModel({
-      message: payload.message,
-      authorId: rootState.users.authUserId
-    })
-
-    console.log('TODO: AddMessage', message)
-
-    // dispatch('firebaseMessageCreate', {
-    //   roomId: state.activeRoomId,
-    //   message: message.toDict()
-    // })
-  },
   addNotice({ dispatch }, { message, room }) {
     const notice = new MessageModel({
       message,

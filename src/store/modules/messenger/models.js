@@ -2,12 +2,11 @@ import BaseModel from '@/store/models'
 
 export class MessageModel extends BaseModel {
   fields() {
-    return ['id', 'isNotice', 'authorId', 'message', 'createdAt']
+    return ['id', 'roomId', 'isNotice', 'authorId', 'message', 'createdAt']
   }
 
   defaults() {
     return {
-      id: this.guid(),
       createdAt: Date.now(),
       isNotice: false
     }
@@ -24,7 +23,9 @@ export class RoomModel extends BaseModel {
       'createdAt',
       'lastMessageAt',
       'userTyping',
-      'isPrivate'
+      'isPrivate',
+
+      'messages'
     ]
   }
 
@@ -33,7 +34,8 @@ export class RoomModel extends BaseModel {
       id: this.guid(),
       createdAt: Date.now(),
       userTyping: false,
-      isPrivate: true
+      isPrivate: true,
+      messages: []
     }
   }
 }

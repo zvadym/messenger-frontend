@@ -34,14 +34,18 @@ export default {
       return this.$store.getters['messenger/activeRoom']
     },
     messages() {
-      return this.$store.getters['messenger/activeRoomMessages']
+      if (!this.room) {
+        return []
+      }
+      return this.$store.getters['messenger/roomMessages'](this.room.id) || []
     }
   },
   watch: {
     $route: function() {
-      console.log('TODO: New room selected. Refetch data')
+      this.initRoom()
     },
     messages: function(newVal) {
+      console.log('TODO: watch room messages')
       const newMsg = newVal[newVal.length - 1]
 
       // Detect a new message comparing `lastMessageAt` with message's `createdAt`
@@ -52,8 +56,14 @@ export default {
     }
   },
   methods: {
+    initRoom() {
+      if (!this.messages.length) {
+        // Load messages
+        this.$store.dispatch('messenger/loadMessages', { room: this.room })
+      }
+    },
     createMessage(message) {
-      this.$store.dispatch('messenger/addMessage', { message })
+      this.$store.dispatch('messenger/createMessage', { message })
     },
     scrollToBottom() {
       document
@@ -61,7 +71,7 @@ export default {
         .scrollIntoView(false, { block: 'end' })
     }
   },
-  mounted: function() {
+  beforeMount: function() {
     // Check/set active room
     if (this.$route.params.id) {
       this.$store.dispatch('messenger/setActiveRoom', {
@@ -73,6 +83,9 @@ export default {
       // Select the first room
       this.$store.dispatch('messenger/setDefaultActiveRoom')
     }
+  },
+  mounted: function() {
+    this.initRoom()
   }
 }
 </script>

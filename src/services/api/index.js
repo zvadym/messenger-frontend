@@ -3,17 +3,16 @@ import axios from '@/axios'
 const USER_DETAILS = 'user/details/{pk}/'
 const ROOMS_LIST = 'rooms/'
 const ROOM_DETAILS = 'rooms/{pk}/'
+const MESSAGE_LIST = 'rooms/{room_pk}/messages/'
 
 export default {
   getUserData(id) {
-    return axios.get(USER_DETAILS.replace('{pk}', id)).then(response => {
-      return response.data
-    })
+    return axios
+      .get(USER_DETAILS.replace('{pk}', id))
+      .then(response => response.data)
   },
   getRooms() {
-    return axios.get(ROOMS_LIST).then(response => {
-      return response.data
-    })
+    return axios.get(ROOMS_LIST).then(response => response.data)
   },
   createRoom(instance) {
     return axios
@@ -22,9 +21,7 @@ export default {
         is_private: instance.isPrivate,
         members: instance.memberIds
       })
-      .then(response => {
-        return response.data
-      })
+      .then(response => response.data)
   },
   updateRoom(instance) {
     return axios.put(ROOM_DETAILS.replace('{pk}', instance.id), {
@@ -34,5 +31,16 @@ export default {
       is_private: instance.isPrivate
     })
   },
-  addMessage() {}
+  createMessage(instance) {
+    return axios
+      .post(MESSAGE_LIST.replace('{room_pk}', instance.roomId), {
+        message: instance.message
+      })
+      .then(response => response.data)
+  },
+  getMessages(roomId) {
+    return axios
+      .get(MESSAGE_LIST.replace('{room_pk}', roomId))
+      .then(response => response.data)
+  }
 }
