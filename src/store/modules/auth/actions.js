@@ -44,7 +44,7 @@ export default {
         router.push({ name: 'login' })
       })
   },
-  refresh({ commit, state }) {
+  refresh({ dispatch, state }) {
     const refreshToken = state.jwtRefresh
 
     return axios
@@ -52,7 +52,7 @@ export default {
         refresh: refreshToken
       })
       .then(response => {
-        commit('setAccessToken', response.data.access)
+        dispatch('updateAccessToken', response.data.access)
         bus.$emit('flash', 'Access token is updated')
       })
       .catch(() => {
@@ -75,7 +75,8 @@ export default {
     // Refresh "access" token when it expires
     dispatch('setRefreshTimer', new Date(jwtDecode(token).exp * 1000))
 
-    return commit('setAccessToken', token)
+    commit('setAccessToken', token)
+    dispatch('socketConnect', null, { root: true })
   },
   updateRefreshToken({ dispatch, commit }, token) {
     const tokenData = jwtDecode(token)

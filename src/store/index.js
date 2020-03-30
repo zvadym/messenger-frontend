@@ -4,6 +4,7 @@ import { createStore } from 'vuex-extensions'
 
 import auth from './modules/auth/index'
 import messenger from './modules/messenger/index'
+import socket from './modules/socket/index'
 import users from './modules/users/index'
 
 Vue.use(Vuex)
@@ -13,6 +14,7 @@ export default createStore(Vuex.Store, {
   modules: {
     auth,
     messenger,
+    socket,
     users
   },
   state: {},

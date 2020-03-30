@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import IdleVue from 'idle-vue'
+import VueNativeSock from 'vue-native-websocket'
+
 import vuetify from '@/plugins/vuetify'
 import router from '@/router'
 import store from '@/store'
@@ -12,6 +14,11 @@ Vue.config.productionTip = false
 const eventsHub = new Vue()
 
 Vue.use(IdleVue, { eventEmitter: eventsHub })
+Vue.use(VueNativeSock, process.env.VUE_APP_WEBSOCKET_BASE_URL, {
+  connectManually: true,
+  store: store,
+  format: 'json'
+})
 
 // Attempt to read credentials from local storage
 store.dispatch('auth/tryAutoLogin')
