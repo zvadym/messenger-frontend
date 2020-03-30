@@ -21,7 +21,7 @@ export class RoomModel extends BaseModel {
       'authorId',
       'memberIds',
       'createdAt',
-      'lastMessageAt',
+      'updatedAt',
       'userTyping',
       'isPrivate',
 

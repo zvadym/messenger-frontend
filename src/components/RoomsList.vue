@@ -50,7 +50,7 @@ export default {
       }
     },
     rooms() {
-      return this.$store.getters['messenger/rooms']
+      return this.$store.getters['messenger/roomsOrdered']
     }
   }
 }

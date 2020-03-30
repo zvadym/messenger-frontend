@@ -26,7 +26,7 @@ export default {
   components: { NewMessageInput, Message, Notice, EmptyRoom },
   data() {
     return {
-      lastMessageAt: null // use for "scroll to the end"
+      updatedAt: null // use for "scroll to the end"
     }
   },
   computed: {
@@ -48,10 +48,10 @@ export default {
       console.log('TODO: watch room messages')
       const newMsg = newVal[newVal.length - 1]
 
-      // Detect a new message comparing `lastMessageAt` with message's `createdAt`
-      if (newMsg && newMsg.createdAt > this.lastMessageAt) {
+      // Detect a new message comparing `updatedAt` with message's `createdAt`
+      if (newMsg && newMsg.createdAt > this.updatedAt) {
         this.$nextTick(this.scrollToBottom)
-        this.lastMessageAt = newMsg.createdAt
+        this.updatedAt = newMsg.createdAt
       }
     }
   },

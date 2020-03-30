@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" min-width="300" max-width="500" outlined>
-    <v-card-title>Create room</v-card-title>
+    <v-card-title>{{ formTitle }}</v-card-title>
     <v-card-text>
       <v-text-field
         autofocus
@@ -81,6 +81,7 @@ export default {
     return {
       editedRoomData: null,
       title: '',
+      formTitle: 'Create room',
       isPrivate: false,
       members: [],
       disableSubmit: true,
@@ -89,7 +90,7 @@ export default {
         () => this.title.length >= 3 || 'at least 3 letters',
         () => this.title.length < 20 || 'max 20 letters',
         () =>
-          /^[\w\d_]+$/.test(this.title) === true ||
+          /^[\w\d_\s]+$/.test(this.title) === true ||
           '[a-z0-9] and _ are allowed',
         this.checkUniqTitle
       ]
@@ -124,6 +125,7 @@ export default {
     if (cid) {
       this.editedRoomData = this.$store.getters['messenger/getById'](cid)
       this.title = this.editedRoomData.title
+      this.formTitle = 'Update room data'
       this.isPrivate = this.editedRoomData.isPrivate
       if (this.isPrivate) {
         this.members = this.editedRoomData.memberIds.filter(

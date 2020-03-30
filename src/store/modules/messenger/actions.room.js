@@ -27,10 +27,7 @@ export default {
         memberIds: payload.members,
         isPrivate: payload.is_private,
         createdAt: Date.parse(payload.created_dt),
-        lastMessageAt: Date.parse(
-          (payload.lastMessageAt && payload.lastMessageAt.created_dt) ||
-            payload.created_dt
-        )
+        updatedAt: Date.parse(payload.updated_dt)
       })
     )
   },
