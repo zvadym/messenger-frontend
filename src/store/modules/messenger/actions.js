@@ -1,5 +1,4 @@
 import { MessageModel } from './models'
-import { getRoomMessagesStateLabel } from './utils'
 import roomActions from './actions.room'
 import messageActions from './actions.message'
 
@@ -35,8 +34,5 @@ export default {
     } else {
       commit('setActiveRoom', rooms[0].id)
     }
-  },
-  createMessagesRoot({ commit }, { room }) {
-    commit('createMessagesRoot', getRoomMessagesStateLabel(room))
   }
 }

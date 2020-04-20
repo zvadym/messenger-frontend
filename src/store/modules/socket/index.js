@@ -10,22 +10,25 @@ export default {
   },
   mutations: {
     SOCKET_ONOPEN(state, event) {
-      Vue.prototype.$socket = event.currentTarget
-      state.isConnected = true
+      if (!state.isConnected) {
+        Vue.prototype.$socket = event.currentTarget
+        state.isConnected = true
+      }
     },
     SOCKET_ONCLOSE(state) {
+      Vue.prototype.$socket = null
       state.isConnected = false
     },
     SOCKET_ONERROR(state, event) {
       console.error(state, event)
     },
-    // default handler called for all methods
     SOCKET_ONMESSAGE(state, message) {
+      // default handler called only if `message.action` isn't found
+      // otherwise store's action will be dispatched automaticaly
       state.message = message
-      WS.receiveMessage(message)
     },
-    // mutations for reconnect methods
     SOCKET_RECONNECT(state, count) {
+      // mutations for reconnect methods
       console.info(state, count)
     },
     SOCKET_RECONNECT_ERROR(state) {
@@ -39,10 +42,11 @@ export default {
     socketDisconnect() {
       WS.disconnect()
     },
-    socketSendMessage(context, message) {
-      // ...
-      Vue.prototype.$socket.sendObj({ msg: message })
-      // ...
+    socketConnectToRoom(context, roomId) {
+      Vue.prototype.$socket.sendObj({
+        type: 'room-join',
+        id: roomId
+      })
     }
   }
 }

@@ -59,7 +59,7 @@ export default {
     })
   },
   updateRoom({ dispatch, rootGetters, getters }, payload) {
-    const room = { ...getters.getById(payload.id) }
+    const room = { ...getters.getRoomById(payload.id) }
     const user = rootGetters['users/getAuthUser']
 
     let changes = []

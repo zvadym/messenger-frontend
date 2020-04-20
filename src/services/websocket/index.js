@@ -8,8 +8,5 @@ export default {
   },
   disconnect() {
     vm.$disconnect()
-  },
-  receiveMessage(msg) {
-    console.log('new message:', msg)
   }
 }

@@ -2,13 +2,14 @@
   <v-container id="messenger-area" fill-height>
     <v-row no-gutters>
       <v-col cols="12">
-        <ul class="messages" v-if="messages.length">
+        <div v-if="loading">Loading...</div>
+        <ul class="messages" v-else-if="messages.length">
           <div v-for="item in messages" :key="'message-' + item.id">
             <Notice v-if="item.isNotice" :data="item" />
             <Message v-else :data="item" />
           </div>
         </ul>
-        <EmptyRoom v-if="!messages.length" />
+        <EmptyRoom v-else />
       </v-col>
     </v-row>
 
@@ -26,10 +27,15 @@ export default {
   components: { NewMessageInput, Message, Notice, EmptyRoom },
   data() {
     return {
-      updatedAt: null // use for "scroll to the end"
+      updatedAt: null, // use for "scroll to the end"
+      messagesLoaded: false,
+      websocketConnected: false
     }
   },
   computed: {
+    loading() {
+      return !(this.messagesLoaded && this.websocketConnected)
+    },
     room() {
       return this.$store.getters['messenger/activeRoom']
     },
@@ -45,7 +51,7 @@ export default {
       this.initRoom()
     },
     messages: function(newVal) {
-      console.log('TODO: watch room messages')
+      // TODO: console.log('Room message watch - scroll to bottom')
       const newMsg = newVal[newVal.length - 1]
 
       // Detect a new message comparing `updatedAt` with message's `createdAt`
@@ -59,7 +65,18 @@ export default {
     initRoom() {
       if (!this.messages.length) {
         // Load messages
-        this.$store.dispatch('messenger/loadMessages', { room: this.room })
+        this.$store
+          .dispatch('messenger/loadMessages', { room: this.room })
+          .then(() => {
+            this.messagesLoaded = true
+          })
+          .then(() => {
+            return this.$store.dispatch('socketConnectToRoom', this.room.id)
+          })
+          .then(() => {
+            console.log("Connect to room's channel")
+            this.websocketConnected = true
+          })
       }
     },
     createMessage(message) {

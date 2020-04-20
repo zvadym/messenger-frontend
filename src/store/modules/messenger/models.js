@@ -23,9 +23,7 @@ export class RoomModel extends BaseModel {
       'createdAt',
       'updatedAt',
       'userTyping',
-      'isPrivate',
-
-      'messages'
+      'isPrivate'
     ]
   }
 
@@ -34,8 +32,7 @@ export class RoomModel extends BaseModel {
       id: this.guid(),
       createdAt: Date.now(),
       userTyping: false,
-      isPrivate: true,
-      messages: []
+      isPrivate: true
     }
   }
 }

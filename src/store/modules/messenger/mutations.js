@@ -1,16 +1,29 @@
-import Vue from 'vue'
-
 export default {
+  //
+  // **** Rooms
+  //
   addRoom(state, data) {
     state.rooms.push(data)
   },
-  addMessage(state, data) {
-    state.messages.push(data)
+  updateRoom(state, data) {
+    state.rooms = [
+      ...state.rooms.filter(element => element.id !== data.id),
+      data
+    ]
   },
   setActiveRoom(state, id) {
     state.activeRoomId = id
   },
-  createMessagesRoot(state, name) {
-    Vue.set(state, name, [])
+  //
+  // **** Messages
+  //
+  addMessage(state, data) {
+    state.messages.push(data)
+  },
+  updateMessage(state, data) {
+    state.messages = [
+      ...state.messages.filter(element => element.id !== data.id),
+      data
+    ]
   }
 }

@@ -123,7 +123,7 @@ export default {
   mounted() {
     const cid = this.$route.params.id
     if (cid) {
-      this.editedRoomData = this.$store.getters['messenger/getById'](cid)
+      this.editedRoomData = this.$store.getters['messenger/getRoomById'](cid)
       this.title = this.editedRoomData.title
       this.formTitle = 'Update room data'
       this.isPrivate = this.editedRoomData.isPrivate
@@ -182,7 +182,7 @@ export default {
       if (index >= 0) this.members.splice(index, 1)
     },
     checkUniqTitle() {
-      const room = this.$store.getters['messenger/getByTitle'](this.title)
+      const room = this.$store.getters['messenger/getRoomByTitle'](this.title)
 
       if (!room) {
         return true
