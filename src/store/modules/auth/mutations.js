@@ -11,11 +11,5 @@ export default {
   },
   updateTimeoutId(state, timeoutId) {
     state.timeoutId = timeoutId
-  },
-  setUserData(state, data) {
-    state.userData = data
-  },
-  clearUserData(state) {
-    state.userData = null
   }
 }

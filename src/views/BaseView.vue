@@ -5,10 +5,8 @@
 
     <v-content id="root-content">
       <v-container fluid fill-height class="pa-0" grey lighten-3>
-        <router-view v-if="loaded" />
-        <div v-else class="text-center ma-12">
-          <v-progress-circular size="50" indeterminate />
-        </div>
+        <router-view v-if="roomsLoaded" />
+        <Loading v-else />>
       </v-container>
     </v-content>
   </v-app>
@@ -17,22 +15,23 @@
 <script>
 import Header from '@/components/Header'
 import UserIdle from '@/components/UserIdle' // detect user actions
+import Loading from '@/components/Loading'
 
 export default {
   data() {
     return {
-      loaded: false
+      roomsLoaded: false
     }
   },
-  computed: {},
   components: {
     Header,
-    UserIdle
+    UserIdle,
+    Loading
   },
   created() {
     if (!this.roomsLoaded) {
       this.$store.dispatch('messenger/loadRooms').then(() => {
-        this.loaded = true
+        this.roomsLoaded = true
       })
     }
   }

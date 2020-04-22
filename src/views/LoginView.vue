@@ -51,20 +51,41 @@ export default {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail.'
         }
-      }
+      },
+      redirectTo: null
     }
   },
   methods: {
     login() {
       this.$refs.form.resetValidation()
-      this.$store.dispatch('auth/login', this.credentials).catch(() => {
-        this.$refs.form.reset()
-      })
+      this.$store
+        .dispatch('auth/login', {
+          email: this.credentials.email,
+          password: this.credentials.password
+        })
+        .then(() => {
+          this.$router.push(this.redirectTo)
+        })
+        .catch(() => {
+          this.$refs.form.reset()
+        })
     }
   },
   mounted() {
     // Reset store
     this.$store.reset()
+
+    // Attempt to login in background (read credentials from local storage)
+    this.$store.dispatch('auth/tryAutoLogin').then(() => {
+      if (this.$store.getters['auth/isAuthenticated']) {
+        this.$router.push(this.redirectTo)
+      }
+    })
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.redirectTo = to.query.redirect || from.path
+    })
   }
 }
 </script>

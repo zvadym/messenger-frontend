@@ -19,20 +19,5 @@ export default {
     //   roomId: room.id,
     //   message: notice.toDict()
     // })
-  },
-
-  setDefaultActiveRoom({ commit, getters, dispatch }) {
-    const rooms = getters.rooms
-
-    if (!rooms.length) {
-      // Create a new room and set it as "Active"
-      dispatch('createRoom', { title: 'master', isPrivate: false }).then(
-        room => {
-          commit('setActiveRoom', room.id)
-        }
-      )
-    } else {
-      commit('setActiveRoom', rooms[0].id)
-    }
   }
 }

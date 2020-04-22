@@ -17,7 +17,7 @@ export default {
   actions: {
     addUser({ commit, getters }, userId) {
       if (!getters['getById'](userId) && !getters['isLoading'](userId)) {
-        api.getUserData(userId).then(payload => {
+        return api.getUserData(userId).then(payload => {
           commit(
             'addUser',
             new UserModel({
@@ -31,8 +31,12 @@ export default {
         })
       }
     },
-    setAuthUser({ commit }, payload) {
-      commit('setAuthUser', payload.id)
+    setAuthUser({ dispatch, commit, getters }, { id }) {
+      if (!getters.getById(id)) {
+        dispatch('addUser', id).then(() => commit('setAuthUser', id))
+      } else {
+        commit('setAuthUser', id)
+      }
     },
     updateActionAt() {
       console.log('TODO: updateActionAt')

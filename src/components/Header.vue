@@ -29,7 +29,7 @@
       </template>
 
       <v-divider />
-      <RoomsList @closeMenu="closeMenu" />
+      <SidebarRoomsList @closeMenu="closeMenu" />
     </v-navigation-drawer>
 
     <v-app-bar app absolute clipped-left>
@@ -50,12 +50,13 @@
 </template>
 
 <script>
-import RoomsList from './RoomsList'
+import bus from '@/bus'
+import SidebarRoomsList from './SidebarRoomsList'
 import UserAvatar from './UserAvatar'
 
 export default {
   name: 'Header',
-  components: { RoomsList, UserAvatar },
+  components: { SidebarRoomsList, UserAvatar },
   data: () => ({
     drawer: null
   }),
@@ -72,7 +73,10 @@ export default {
       this.drawer = false
     },
     signOut() {
-      this.$store.dispatch('auth/logout')
+      this.$store.dispatch('auth/logout').then(() => {
+        bus.$emit('flash', 'Goodbye! Your session has ended.', 'success')
+        this.$router.push({ name: 'login' })
+      })
     }
   }
 }

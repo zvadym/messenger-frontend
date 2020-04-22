@@ -1,0 +1,60 @@
+<template>
+  <ul v-if="messages.length" class="messages">
+    <div v-for="item in messages" :key="'message-' + item.id">
+      <Notice v-if="item.isNotice" :data="item" />
+      <RoomMessage v-else :data="item" />
+    </div>
+  </ul>
+  <RoomEmpty v-else />
+</template>
+
+<script>
+import RoomEmpty from './RoomEmpty'
+import RoomMessage from './RoomMessage'
+import Notice from './Notice'
+
+export default {
+  components: { RoomEmpty, RoomMessage, Notice },
+  props: {
+    roomInstance: [Object]
+  },
+  data() {
+    return {
+      updatedAt: null // use for "scroll to the end"
+    }
+  },
+  computed: {
+    messages() {
+      return (
+        this.$store.getters['messenger/roomMessages'](this.roomInstance.id) ||
+        []
+      )
+    }
+  },
+  watch: {
+    // messages: function(newVal) {
+    //   // TODO: console.log('Room message watch - scroll to bottom')
+    //   const newMsg = newVal[newVal.length - 1]
+    //   // Detect a new message comparing `updatedAt` with message's `createdAt`
+    //   if (newMsg && newMsg.createdAt > this.updatedAt) {
+    //     this.$nextTick(this.scrollToBottom)
+    //     this.updatedAt = newMsg.createdAt
+    //   }
+    // }
+  },
+  methods: {
+    // scrollToBottom() {
+    //   document
+    //     .getElementById('root-content')
+    //     .scrollIntoView(false, { block: 'end' })
+    // }
+  }
+}
+</script>
+
+<style scoped>
+.messages {
+  padding: 0;
+  list-style: none;
+}
+</style>

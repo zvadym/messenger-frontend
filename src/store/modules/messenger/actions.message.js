@@ -6,7 +6,7 @@ export default {
     // Get all room's messages via API
     return api.getMessages(payload.room.id).then(data => {
       data.forEach(item => {
-        dispatch('addMessage', { message: item })
+        dispatch('addMessage', { data: item })
       })
     })
   },
@@ -25,14 +25,14 @@ export default {
       })
     })
   },
-  addMessage({ commit, getters }, { message }) {
+  addMessage({ commit, getters }, { data }) {
     // Add message to store
     const m = new MessageModel({
-      id: message.id,
-      message: message.message,
-      authorId: message.created_by,
-      roomId: message.room_id,
-      createdAt: message.created_dt
+      id: data.id,
+      message: data.message,
+      authorId: data.created_by,
+      roomId: data.room_id,
+      createdAt: data.created_dt
     })
 
     // check if message with id exists and replace

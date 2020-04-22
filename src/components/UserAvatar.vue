@@ -2,7 +2,7 @@
   <div class="avatar">
     <v-avatar size="30" color="red" :title="user.fullName">
       <v-img v-if="user.avatar" :src="user.avatar" />
-      <span v-else class="white--text headline">{{ user.initials }}</span>
+      <span v-else class="white--text">{{ user.initials }}</span>
       <v-icon size="10" :color="color" class="network">mdi-brightness-1</v-icon>
     </v-avatar>
   </div>

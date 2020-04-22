@@ -43,9 +43,9 @@ export default {
         return this.$store.state.messenger.activeRoomId
       },
       set: function(id) {
-        this.$store.dispatch('messenger/setActiveRoom', { id }).then(() => {
-          this.$router.push({ name: 'room', params: { id } })
-        })
+        this.$router.push({ name: 'room', params: { id } })
+        // this.$store.dispatch('messenger/setActiveRoom', { id }).then(() => {
+        // })
         this.$emit('closeMenu')
       }
     },

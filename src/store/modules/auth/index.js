@@ -7,10 +7,7 @@ export default {
   state: {
     jwtAccess: null,
     jwtRefresh: null,
-
-    timeoutId: null,
-
-    userData: null
+    timeoutId: null
   },
   getters,
   actions,

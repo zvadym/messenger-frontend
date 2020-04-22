@@ -6,7 +6,7 @@ Vue.use(Router)
 
 function loadView(view) {
   return () =>
-    import(/* webpackChunkName: "view-[request]" */ `@/views/${view}.vue`)
+    import(/* webpackChunkName: "view-[request]" */ `@/views/${view}View.vue`)
 }
 
 const router = new Router({
@@ -48,6 +48,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  console.debug(`Route [${from.path}] => [${to.path}]`)
+
   if (to.matched.some(record => record.meta.authRequired)) {
     const isAuth = store.getters['auth/isAuthenticated']
 

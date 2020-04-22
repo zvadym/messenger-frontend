@@ -1,0 +1,107 @@
+<template>
+  <v-container id="messenger-area" fill-height>
+    <v-row no-gutters>
+      <v-col cols="12">
+        <Loading v-if="loading" />
+        <RoomContent v-else :roomInstance="room" />
+      </v-col>
+    </v-row>
+
+    <NewMessageInput @createMessage="createMessage" />
+  </v-container>
+</template>
+
+<script>
+import NewMessageInput from '@/components/NewMessageInput'
+import RoomContent from '@/components/RoomContent'
+import Loading from '@/components/Loading'
+
+export default {
+  components: { NewMessageInput, RoomContent, Loading },
+  data() {
+    return {
+      messagesLoaded: false,
+      websocketConnected: false
+    }
+  },
+  computed: {
+    loading() {
+      return !(this.messagesLoaded && this.websocketConnected)
+    },
+    room() {
+      return this.$store.getters['messenger/getRoomById'](this.$route.params.id)
+    }
+  },
+  watch: {
+    room: function() {
+      this.initRoom()
+    }
+  },
+  methods: {
+    initRoom() {
+      console.log('initRoom', this.room)
+
+      this.$store.dispatch('messenger/setActiveRoom', { id: this.room.id })
+
+      if (!this.$store.getters['messenger/roomMessages'](this.room.id).length) {
+        this.messagesLoaded = false
+        this.websocketConnected = false
+
+        // Load messages (get from the api)
+        this.$store
+          .dispatch('messenger/loadMessages', { room: this.room })
+          .then(() => {
+            this.messagesLoaded = true
+          })
+          .then(() => {
+            return this.$store.dispatch('socketConnectToRoom', this.room.id)
+          })
+          .then(() => {
+            console.log('Connected to the room channel')
+            this.websocketConnected = true
+          })
+      }
+    },
+    createMessage(message) {
+      this.$store.dispatch('messenger/createMessage', { message })
+    }
+  },
+  beforeMount: async function() {
+    let roomId = this.$route.params.id
+
+    if (roomId && this.$store.getters['messenger/getRoomById'](roomId)) {
+      return true
+    }
+
+    // If no room specified - select the first active one.
+    // If no rooms were created at all - create a new one.
+    const rooms = this.$store.getters['messenger/roomsOrdered']
+
+    if (!rooms.length) {
+      const room = await this.$store.dispatch('messenger/createRoom', {
+        title: 'master',
+        isPrivate: false
+      })
+      roomId = room.id
+    } else {
+      roomId = rooms[0].id
+    }
+
+    this.$router.push({
+      name: 'room',
+      params: { id: roomId }
+    })
+  },
+  mounted() {
+    if (this.room) {
+      this.initRoom()
+    }
+  }
+}
+</script>
+
+<style scoped>
+#messenger-area {
+  align-items: flex-start;
+}
+</style>

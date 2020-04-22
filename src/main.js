@@ -20,9 +20,6 @@ Vue.use(VueNativeSock, process.env.VUE_APP_WEBSOCKET_BASE_URL, {
   format: 'json'
 })
 
-// Attempt to read credentials from local storage
-store.dispatch('auth/tryAutoLogin')
-
 new Vue({
   router,
   store,

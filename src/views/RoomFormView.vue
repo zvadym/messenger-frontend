@@ -165,10 +165,12 @@ export default {
     editRoom() {
       this.$store
         .dispatch('messenger/updateRoom', {
-          id: this.editedRoomData.id,
-          title: this.title,
-          isPrivate: this.isPrivate,
-          members: this.members
+          data: {
+            id: this.editedRoomData.id,
+            title: this.title,
+            isPrivate: this.isPrivate,
+            members: this.members
+          }
         })
         .then(() => {
           this.$router.push({
