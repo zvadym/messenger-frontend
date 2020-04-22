@@ -25,7 +25,7 @@ export default {
       })
     })
   },
-  addMessage({ commit, getters }, { data }) {
+  addMessage({ commit, getters, dispatch }, { data }) {
     // Add message to store
     const m = new MessageModel({
       id: data.id,
@@ -35,11 +35,13 @@ export default {
       createdAt: data.created_dt
     })
 
-    // check if message with id exists and replace
-    if (getters.getMessageById(m.id)) {
-      commit('updateMessage', m)
-    } else {
-      commit('addMessage', m)
-    }
+    return dispatch('users/addUser', m.authorId, { root: true }).then(() => {
+      // check if message with id exists and replace
+      if (getters.getMessageById(m.id)) {
+        commit('updateMessage', m)
+      } else {
+        commit('addMessage', m)
+      }
+    })
   }
 }
