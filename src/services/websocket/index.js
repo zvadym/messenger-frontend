@@ -8,5 +8,13 @@ export default {
   },
   disconnect() {
     vm.$disconnect()
+  },
+  connectToRoom(id) {
+    vm.$socket.send(
+      JSON.stringify({
+        type: 'room-join',
+        id
+      })
+    )
   }
 }

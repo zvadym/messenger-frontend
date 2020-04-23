@@ -16,8 +16,13 @@ const eventsHub = new Vue()
 Vue.use(IdleVue, { eventEmitter: eventsHub })
 Vue.use(VueNativeSock, process.env.VUE_APP_WEBSOCKET_BASE_URL, {
   connectManually: true,
-  store: store,
-  format: 'json'
+  store,
+  passToStoreHandler: function(eventName, event, next) {
+    if (eventName.toUpperCase() === 'SOCKET_ONMESSAGE') {
+      store.dispatch('socketOnEvent', event)
+    }
+    next(eventName, event)
+  }
 })
 
 new Vue({

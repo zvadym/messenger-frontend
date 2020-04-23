@@ -48,10 +48,11 @@ export default {
       { root: true }
     ).then(() =>
       // Refresh "access" token when it expires
-      dispatch(
-        'setRefreshTimer',
-        new Date(jwtDecode(token).exp * 1000)
-      ).then(() => dispatch('socketConnect', null, { root: true }))
+      dispatch('setRefreshTimer', new Date(jwtDecode(token).exp * 1000)).then(
+        () =>
+          // Open socket
+          dispatch('socketConnect', null, { root: true })
+      )
     )
   },
   updateRefreshToken({ commit }, token) {

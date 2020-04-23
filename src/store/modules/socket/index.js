@@ -23,8 +23,8 @@ export default {
       console.error(state, event)
     },
     SOCKET_ONMESSAGE(state, message) {
-      // default handler called only if `message.action` isn't found
-      // otherwise store's action will be dispatched automaticaly
+      // default handler called for all methods
+      // Notice: All events handled by `passToStoreHandler`
       state.message = message
     },
     SOCKET_RECONNECT(state, count) {
@@ -42,11 +42,28 @@ export default {
     socketDisconnect() {
       WS.disconnect()
     },
+    socketOnEvent({ dispatch }, event) {
+      // It works like if it set `VueNativeSock.format=json`
+      // but in this way it's possible to control things
+      // and, as it is done below, add prefix to action name
+      if (event.isTrusted && event.data) {
+        const data = JSON.parse(event.data)
+        if (data.action) {
+          let action = 'socket__' + data.action
+
+          if (data.namespace) {
+            action = data.namespace + '/' + action
+          }
+
+          dispatch(action, data.data, {
+            root: true
+          })
+        }
+      }
+    },
+
     socketConnectToRoom(context, roomId) {
-      Vue.prototype.$socket.sendObj({
-        type: 'room-join',
-        id: roomId
-      })
+      WS.connectToRoom(roomId)
     }
   }
 }
