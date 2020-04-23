@@ -1,5 +1,5 @@
 <template>
-  <v-alert :type="type" border="top" dense colored-border dismissible>
+  <v-alert :type="type" border="top" dense dismissible>
     {{ message }}
   </v-alert>
 </template>

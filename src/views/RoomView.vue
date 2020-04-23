@@ -7,17 +7,17 @@
       </v-col>
     </v-row>
 
-    <NewMessageInput @createMessage="createMessage" />
+    <RoomMessageInput @createMessage="createMessage" />
   </v-container>
 </template>
 
 <script>
-import NewMessageInput from '@/components/NewMessageInput'
+import RoomMessageInput from '@/components/RoomMessageInput'
 import RoomContent from '@/components/RoomContent'
 import Loading from '@/components/Loading'
 
 export default {
-  components: { NewMessageInput, RoomContent, Loading },
+  components: { RoomMessageInput, RoomContent, Loading },
   data() {
     return {
       messagesLoaded: false,
@@ -39,8 +39,6 @@ export default {
   },
   methods: {
     initRoom() {
-      console.log('initRoom', this.room)
-
       this.$store.dispatch('messenger/setActiveRoom', { id: this.room.id })
 
       if (!this.$store.getters['messenger/roomMessages'](this.room.id).length) {
@@ -57,7 +55,6 @@ export default {
             return this.$store.dispatch('socketConnectToRoom', this.room.id)
           })
           .then(() => {
-            console.log('Connected to the room channel')
             this.websocketConnected = true
           })
       }

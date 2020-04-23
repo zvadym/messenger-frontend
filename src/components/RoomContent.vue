@@ -1,5 +1,5 @@
 <template>
-  <ul v-if="messages.length" class="messages">
+  <ul v-if="messages.length" id="messages">
     <div v-for="item in messages" :key="'message-' + item.id">
       <Notice v-if="item.isNotice" :data="item" />
       <RoomMessage v-else :data="item" />
@@ -32,29 +32,32 @@ export default {
     }
   },
   watch: {
-    // messages: function(newVal) {
-    //   // TODO: console.log('Room message watch - scroll to bottom')
-    //   const newMsg = newVal[newVal.length - 1]
-    //   // Detect a new message comparing `updatedAt` with message's `createdAt`
-    //   if (newMsg && newMsg.createdAt > this.updatedAt) {
-    //     this.$nextTick(this.scrollToBottom)
-    //     this.updatedAt = newMsg.createdAt
-    //   }
-    // }
+    messages: function(newVal) {
+      const newMsg = newVal[newVal.length - 1]
+      // Detect a new message comparing `updatedAt` with message's `createdAt`
+      if (newMsg && newMsg.createdAt > this.updatedAt) {
+        this.$nextTick(this.scrollToBottom)
+        this.updatedAt = newMsg.createdAt
+      }
+    }
   },
   methods: {
-    // scrollToBottom() {
-    //   document
-    //     .getElementById('root-content')
-    //     .scrollIntoView(false, { block: 'end' })
-    // }
+    scrollToBottom() {
+      document
+        .getElementById('messages')
+        .scrollIntoView(false, { block: 'end' })
+    }
+  },
+  mounted() {
+    this.updatedAt = this.messages[this.messages.length - 1].createdAt
+    this.scrollToBottom()
   }
 }
 </script>
 
 <style scoped>
-.messages {
-  padding: 0;
+#messages {
+  padding: 0 0 75px 0;
   list-style: none;
 }
 </style>

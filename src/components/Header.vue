@@ -32,7 +32,7 @@
       <SidebarRoomsList @closeMenu="closeMenu" />
     </v-navigation-drawer>
 
-    <v-app-bar app absolute clipped-left>
+    <v-app-bar app clipped-left>
       <v-app-bar-nav-icon v-if="user" @click.stop="drawer = !drawer" />
       <template v-if="activeRoom">
         <v-toolbar-title>#{{ activeRoom.title }} </v-toolbar-title>

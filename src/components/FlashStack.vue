@@ -60,37 +60,20 @@ export default {
   opacity: 0;
   transform: translateX(30px);
 }
+
 #alert-stack {
   position: fixed;
   right: 0;
-  bottom: 0;
+  bottom: 80px;
   left: 0;
+  padding: 0 20px;
 }
 @media (min-width: 768px) {
   #alert-stack {
-    width: 32rem;
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    left: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-  }
-}
-.alert {
-  width: 100%;
-  display: block;
-  padding: 0.5em;
-  margin-top: 0.5em;
-}
-@media (min-width: 768px) {
-  .alert {
-    position: relative;
-    padding: 1em;
-    margin-top: 1em;
-    border-radius: 0.25rem;
-    font-size: 1.125rem;
+    left: auto;
   }
 }
 </style>

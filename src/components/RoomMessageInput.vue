@@ -1,12 +1,10 @@
 <template>
-  <v-footer app padless class="px-2 pb-2">
+  <v-footer fixed padless id="room-footer">
     <v-text-field
       label="Message.."
-      prepend-icon="place"
       append-outer-icon="send"
       ref="input"
       v-model="inputData"
-      :rules="[() => !!inputData || 'This field is required']"
       @click:append-outer="send"
       @keypress.enter="send"
     />
@@ -22,12 +20,17 @@ export default {
   },
   methods: {
     send() {
-      const inputRef = this.$refs['input']
-      if (inputRef.validate()) {
+      if (this.inputData.length) {
         this.$emit('createMessage', this.inputData)
-        inputRef.reset()
+        this.$refs['input'].reset()
       }
     }
   }
 }
 </script>
+
+<style lang="sass" scoped>
+#room-footer
+  padding: 5px 20px
+  border-top: #ccc 4px solid
+</style>
