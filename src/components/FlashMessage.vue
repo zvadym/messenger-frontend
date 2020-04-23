@@ -1,29 +1,18 @@
 <template>
-  <div v-show="show" :class="level" class="alert" role="alert">
-    <div class="dismiss" @click="dismiss">
-      <v-icon name="times" class="float-right cursor-pointer mx-2" />
-    </div>
-    {{ body }}
-  </div>
+  <v-alert :type="type" border="top" dense colored-border dismissible>
+    {{ message }}
+  </v-alert>
 </template>
 
 <script>
 export default {
   props: {
     message: String,
-    level: String,
+    type: String,
     nonce: String,
     delay: Number
   },
-  data() {
-    return {
-      body: '',
-      type: 'info',
-      show: true
-    }
-  },
   created() {
-    this.body = this.message
     if (this.delay > 0) {
       setTimeout(() => {
         this.dismiss()
@@ -32,7 +21,6 @@ export default {
   },
   methods: {
     dismiss() {
-      this.show = false
       this.$emit('remove', this.nonce)
     }
   }

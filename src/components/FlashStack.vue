@@ -4,9 +4,9 @@
       <flash
         v-for="alert in alerts"
         :key="alert.nonce"
-        :message="alert.message"
-        :level="alert.level"
         :nonce="alert.nonce"
+        :type="alert.level"
+        :message="alert.message"
         :delay="3000"
         @remove="remove"
       />
@@ -16,18 +16,17 @@
 
 <script>
 import bus from '@/bus'
+import uniqId from '@/utils/unique-id'
 import FlashMessage from '@/components/FlashMessage.vue'
 export default {
   components: {
     flash: FlashMessage
   },
-  props: [],
   data() {
     return {
       alerts: []
     }
   },
-  computed: {},
   created() {
     bus.$on('flash', (message, level) => {
       this.flash(message, level)
@@ -39,7 +38,7 @@ export default {
         message,
         level,
         show: true,
-        nonce: this.generateNonce()
+        nonce: uniqId()
       })
     },
     remove(nonce) {
@@ -47,14 +46,6 @@ export default {
       if (index !== -1) {
         this.alerts.splice(index, 1)
       }
-    },
-    generateNonce() {
-      let text = ''
-      const possible = 'abcdefghijklmnopqrstuvwxyz0123456789'
-      for (let i = 0; i < 6; i += 1) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length))
-      }
-      return text
     }
   }
 }
@@ -101,49 +92,5 @@ export default {
     border-radius: 0.25rem;
     font-size: 1.125rem;
   }
-}
-.alert.success {
-  background-color: #e3fcec;
-  color: #1f9d55;
-  border: 2px solid #51d88a;
-}
-.alert.success a {
-  color: #1f9d55;
-}
-.alert.success a:hover {
-  color: #1a4731;
-}
-.alert.info {
-  color: #2779bd;
-  background-color: #eff8ff;
-  border: 2px solid #64d5ca;
-}
-.alert.info a {
-  color: #2779bd;
-}
-.alert.info a:hover {
-  color: #1c3d5a;
-}
-.alert.warning {
-  background-color: #fcfbeb;
-  color: #f2d024;
-  border: 2px solid #faad63;
-}
-.alert.warning a {
-  color: #f2d024;
-}
-.alert.warning a:hover {
-  color: #684f1d;
-}
-.alert.danger {
-  background-color: #fcebea;
-  color: #cc1f1a;
-  border: 2px solid #ef5753;
-}
-.alert.danger a {
-  color: #cc1f1a;
-}
-.alert.danger a:hover {
-  color: #621b18;
 }
 </style>
