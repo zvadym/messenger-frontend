@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     updateUserStatus() {
-      this.$store.dispatch('users/updateActionAt')
+      this.$store.dispatch('users/apiTouchUser')
     }
   },
   onIdle() {

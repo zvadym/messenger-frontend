@@ -87,7 +87,7 @@ export default {
 
     return dispatch('updateRefreshToken', refreshToken)
       .then(() => dispatch('refreshAccessToken'))
-      .then(() => bus.$emit('flash', 'Autologin => success'))
+      .then(() => bus.$emit('flash', 'Autologin => success', 'success'))
       .catch(error =>
         bus.$emit('flash', `Autologin failded - ${error.message}`, 'warning')
       )

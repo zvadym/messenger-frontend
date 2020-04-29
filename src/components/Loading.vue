@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center ma-12">
-    <v-progress-circular size="50" indeterminate />
+  <div class="text-center ma-auto">
+    <v-progress-circular size="80" indeterminate />
   </div>
 </template>

@@ -6,10 +6,7 @@ export default {
   loadRooms({ dispatch }) {
     return api.getRooms().then(data => {
       let promises = []
-      data.forEach(item => {
-        promises.push(dispatch('addRoom', { data: item }))
-      })
-
+      data.forEach(item => promises.push(dispatch('addRoom', { data: item })))
       return Promise.all(promises)
     })
   },
@@ -17,9 +14,9 @@ export default {
   addRoom({ commit, dispatch }, { data }) {
     let promises = []
     // Add member to vuex
-    promises.push(dispatch('users/addUser', data.created_by, { root: true }))
-    data.members.forEach(item =>
-      promises.push(dispatch('users/addUser', item, { root: true }))
+    promises.push(dispatch('users/apiGetUser', data.created_by, { root: true }))
+    data.members.forEach(uid =>
+      promises.push(dispatch('users/apiGetUser', uid, { root: true }))
     )
 
     const room = new RoomModel({

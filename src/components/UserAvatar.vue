@@ -9,8 +9,6 @@
 </template>
 
 <script>
-const ONLINE_DELTA = 5 * 60 * 60 * 1000 // 5 min
-
 export default {
   name: 'UserAvatar',
   props: {
@@ -18,13 +16,7 @@ export default {
   },
   computed: {
     color() {
-      return this.isOnline ? 'green' : 'grey'
-    },
-    isOnline() {
-      return (
-        this.user.lastActionAt &&
-        Date.now() - this.user.lastActionAt.getTime() < ONLINE_DELTA
-      )
+      return this.user.isOnline ? 'green' : 'grey'
     }
   }
 }

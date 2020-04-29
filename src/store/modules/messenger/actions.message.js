@@ -35,7 +35,7 @@ export default {
       createdAt: data.created_dt
     })
 
-    return dispatch('users/addUser', m.authorId, { root: true }).then(() => {
+    return dispatch('users/apiGetUser', m.authorId, { root: true }).then(() => {
       // check if message with id exists and replace
       if (getters.getMessageById(m.id)) {
         commit('updateMessage', m)
