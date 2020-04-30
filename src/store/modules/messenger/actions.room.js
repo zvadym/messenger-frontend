@@ -12,13 +12,6 @@ export default {
   },
   // Add existing instance to vuex
   addRoom({ commit, dispatch }, { data }) {
-    let promises = []
-    // Add member to vuex
-    promises.push(dispatch('users/apiGetUser', data.created_by, { root: true }))
-    data.members.forEach(uid =>
-      promises.push(dispatch('users/apiGetUser', uid, { root: true }))
-    )
-
     const room = new RoomModel({
       id: data.id,
       title: data.title,
@@ -28,9 +21,12 @@ export default {
       createdAt: Date.parse(data.created_dt),
       updatedAt: Date.parse(data.updated_dt)
     })
-
     commit('addRoom', room)
-    return Promise.all(promises).then(() => room)
+
+    // Connect to room' channel (websocket)
+    return dispatch('socketConnectToRoom', room.id, { root: true }).then(
+      () => room
+    )
   },
   setActiveRoom({ commit }, { id }) {
     console.log('=> setActiveRoom', id)

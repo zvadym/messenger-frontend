@@ -61,7 +61,6 @@ export default {
         }
       }
     },
-
     socketConnectToRoom(context, roomId) {
       WS.connectToRoom(roomId)
     }

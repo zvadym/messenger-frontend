@@ -20,13 +20,12 @@ export default {
   components: { RoomMessageInput, RoomContent, Loading },
   data() {
     return {
-      messagesLoaded: false,
-      websocketConnected: false
+      messagesLoaded: false
     }
   },
   computed: {
     loading() {
-      return !(this.messagesLoaded && this.websocketConnected)
+      return !this.messagesLoaded
     },
     room() {
       return this.$store.getters['messenger/getRoomById'](this.$route.params.id)
@@ -43,19 +42,12 @@ export default {
 
       if (!this.$store.getters['messenger/roomMessages'](this.room.id).length) {
         this.messagesLoaded = false
-        this.websocketConnected = false
 
         // Load messages (get from the api)
         this.$store
           .dispatch('messenger/loadMessages', { room: this.room })
           .then(() => {
             this.messagesLoaded = true
-          })
-          .then(() => {
-            return this.$store.dispatch('socketConnectToRoom', this.room.id)
-          })
-          .then(() => {
-            this.websocketConnected = true
           })
       }
     },
