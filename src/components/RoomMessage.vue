@@ -29,7 +29,7 @@ export default {
       return this.$store.getters['users/getById'](this.data.authorId)
     },
     isMyMessage() {
-      return this.$store.state.users.authUserId === this.data.authorId
+      return this.$store.state.auth.authUserId === this.data.authorId
     }
   }
 }

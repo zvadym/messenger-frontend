@@ -5,6 +5,7 @@ import mutations from './mutations'
 export default {
   namespaced: true,
   state: {
+    authUserId: null,
     jwtAccess: null,
     jwtRefresh: null,
     timeoutId: null

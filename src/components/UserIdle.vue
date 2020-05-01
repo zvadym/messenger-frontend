@@ -2,7 +2,7 @@
   <span />
 </template>
 <script>
-const TIMEOUT = 3 * 60 * 60 * 1000 // 3 min
+const TIMEOUT = 30 * 1000 // 30 sec
 
 export default {
   data() {
@@ -11,12 +11,12 @@ export default {
     }
   },
   mounted() {
-    this.updateUserStatus()
+    this.touchUser()
 
     setInterval(() => {
       if (this.isActive) {
         // User still active - update `lastActionAt`
-        this.updateUserStatus()
+        this.touchUser()
       }
     }, TIMEOUT)
   },
@@ -26,7 +26,7 @@ export default {
     }
   },
   methods: {
-    updateUserStatus() {
+    touchUser() {
       this.$store.dispatch('users/apiTouchUser')
     }
   },
@@ -41,7 +41,7 @@ export default {
       (!this.user.lastActionAt ||
         Date.now() - this.user.lastActionAt.getTime() > TIMEOUT)
     ) {
-      this.updateUserStatus()
+      this.touchUser()
     }
   }
 }

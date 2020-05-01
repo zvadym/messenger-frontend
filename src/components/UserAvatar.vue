@@ -9,15 +9,33 @@
 </template>
 
 <script>
+const ONLINE_DELTA = 1 * 60 * 1000 // 1 min
+
 export default {
   name: 'UserAvatar',
   props: {
     user: [Object]
   },
-  computed: {
-    color() {
-      return this.user.isOnline ? 'green' : 'grey'
+  data() {
+    return {
+      now: Date.now()
     }
+  },
+  computed: {
+    isOnline() {
+      return (
+        this.user.lastActionAt &&
+        this.now - this.user.lastActionAt.getTime() < ONLINE_DELTA
+      )
+    },
+    color() {
+      return this.isOnline ? 'green' : 'grey'
+    }
+  },
+  created() {
+    setInterval(() => {
+      this.now = Date.now()
+    }, 10 * 1000)
   }
 }
 </script>

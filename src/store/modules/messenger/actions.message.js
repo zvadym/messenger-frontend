@@ -16,7 +16,7 @@ export default {
     return new Promise(resolve => {
       const message = new MessageModel({
         message: payload.message,
-        authorId: rootState.users.authUserId,
+        authorId: rootState.auth.authUserId,
         roomId: state.activeRoomId
       })
 

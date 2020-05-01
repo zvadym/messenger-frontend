@@ -1,7 +1,4 @@
 export default {
-  setAuthUser(state, uid) {
-    state.authUserId = uid
-  },
   addToLoadingQueue(state, uid) {
     state.usersLoading.push(uid)
   },

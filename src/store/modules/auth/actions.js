@@ -42,11 +42,7 @@ export default {
     commit('setAccessToken', token)
 
     // Set current AuthUser
-    return dispatch(
-      'users/setAuthUser',
-      { id: jwtDecode(token).user_id },
-      { root: true }
-    ).then(() =>
+    return dispatch('setAuthUser', { id: jwtDecode(token).user_id }).then(() =>
       // Refresh "access" token when it expires
       dispatch('setRefreshTimer', new Date(jwtDecode(token).exp * 1000)).then(
         () =>
@@ -68,6 +64,9 @@ export default {
     }, expirationTime - new Date())
 
     return commit('updateTimeoutId', timeoutId)
+  },
+  setAuthUser({ commit }, { id }) {
+    commit('setAuthUser', id)
   },
   tryAutoLogin({ commit, dispatch }) {
     const refreshToken = window.localStorage.getItem('auth_refresh_token')

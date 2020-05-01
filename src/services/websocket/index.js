@@ -16,5 +16,13 @@ export default {
         id
       })
     )
+  },
+  connectToMember(id) {
+    vm.$socket.send(
+      JSON.stringify({
+        type: 'member-join',
+        id
+      })
+    )
   }
 }

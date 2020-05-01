@@ -11,5 +11,8 @@ export default {
   },
   updateTimeoutId(state, timeoutId) {
     state.timeoutId = timeoutId
+  },
+  setAuthUser(state, uid) {
+    state.authUserId = uid
   }
 }

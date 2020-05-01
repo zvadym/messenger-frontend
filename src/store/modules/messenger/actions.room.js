@@ -34,7 +34,7 @@ export default {
   },
   createRoom({ dispatch, rootState, rootGetters }, payload) {
     return new Promise(resolve => {
-      const userId = rootState.users.authUserId
+      const userId = rootState.auth.authUserId
       const room = new RoomModel({
         title: payload.title,
         authorId: userId,
