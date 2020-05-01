@@ -1,13 +1,17 @@
 <template>
   <span />
 </template>
+
 <script>
+import bus from '@/bus'
+
 const TIMEOUT = 30 * 1000 // 30 sec
 
 export default {
   data() {
     return {
-      isActive: true
+      isActive: true,
+      lastActiveAt: Date.now()
     }
   },
   mounted() {
@@ -34,7 +38,21 @@ export default {
     this.isActive = false
   },
   onActive() {
+    const timeDelta = Date.now() - this.lastActiveAt
     this.isActive = true
+    this.lastActiveAt = Date.now()
+
+    if (timeDelta > 60 * 1000) {
+      bus.$emit(
+        'flash',
+        'Inactivity delta ' + parseInt(timeDelta / 1000) + ' sec',
+        'warning'
+      )
+    }
+
+    if (timeDelta > 30 * 60 * 1000) {
+      console.warning('TODO: timeDelta > 30 min - reinit app')
+    }
 
     if (
       this.user &&

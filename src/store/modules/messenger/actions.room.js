@@ -29,7 +29,6 @@ export default {
     )
   },
   setActiveRoom({ commit }, { id }) {
-    console.log('=> setActiveRoom', id)
     commit('setActiveRoom', id)
   },
   createRoom({ dispatch, rootState, rootGetters }, payload) {

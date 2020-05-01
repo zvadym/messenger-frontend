@@ -9,7 +9,7 @@
 </template>
 
 <script>
-const ONLINE_DELTA = 1 * 60 * 1000 // 1 min
+const ONLINE_DELTA = 3 * 60 * 1000 // 1 min
 
 export default {
   name: 'UserAvatar',

@@ -49,8 +49,10 @@ export default {
     }
   },
   mounted() {
-    this.updatedAt = this.messages[this.messages.length - 1].createdAt
-    this.scrollToBottom()
+    if (this.messages.length) {
+      this.updatedAt = this.messages[this.messages.length - 1].createdAt
+      this.scrollToBottom()
+    }
   }
 }
 </script>
