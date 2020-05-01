@@ -1,16 +1,16 @@
-import { UserModel } from './models'
+import { dataToModel } from './actions'
+import bus from '@/bus'
 
 export default {
   socket__updateUser({ commit }, payload) {
-    commit(
-      'updateUser',
-      new UserModel({
-        id: payload.id,
-        email: payload.email,
-        firstName: payload.first_name,
-        lastName: payload.last_name,
-        lastActionAt: payload.last_action_dt
-      })
+    commit('updateUser', dataToModel(payload))
+  },
+  socket__createUser({ dispatch }, payload) {
+    bus.$emit(
+      'flash',
+      'A new member is joined - ' + dataToModel(payload).fullName,
+      'info'
     )
+    return dispatch('addUser', { data: payload })
   }
 }
