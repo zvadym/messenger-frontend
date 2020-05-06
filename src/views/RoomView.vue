@@ -2,8 +2,8 @@
   <v-container id="messenger-area" fill-height>
     <v-row no-gutters>
       <v-col cols="12">
-        <Loading v-if="loading" />
-        <RoomContent v-else :roomInstance="room" />
+        <RoomContent v-if="loaded" :roomInstance="room" />
+        <Loading v-else />
       </v-col>
     </v-row>
 
@@ -24,8 +24,8 @@ export default {
     }
   },
   computed: {
-    loading() {
-      return !this.messagesLoaded
+    loaded() {
+      return this.messagesLoaded
     },
     room() {
       return this.$store.getters['messenger/getRoomById'](this.$route.params.id)
@@ -40,7 +40,9 @@ export default {
     initRoom() {
       this.$store.dispatch('messenger/setActiveRoom', { id: this.room.id })
 
-      if (!this.$store.getters['messenger/roomMessages'](this.room.id).length) {
+      if (this.$store.getters['messenger/roomMessages'](this.room.id).length) {
+        this.messagesLoaded = true
+      } else {
         this.messagesLoaded = false
 
         // Load messages (get from the api)

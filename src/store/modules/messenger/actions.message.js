@@ -1,6 +1,15 @@
 import { MessageModel } from './models'
 import api from '@/services/api/index'
 
+export const dataToModel = data =>
+  new MessageModel({
+    id: data.id,
+    message: data.message,
+    authorId: data.created_by,
+    roomId: data.room_id,
+    createdAt: data.created_dt
+  })
+
 export default {
   loadMessages({ dispatch }, payload) {
     // Get all room's messages via API
@@ -27,13 +36,7 @@ export default {
   },
   addMessage({ commit, getters, dispatch }, { data }) {
     // Add message to store
-    const m = new MessageModel({
-      id: data.id,
-      message: data.message,
-      authorId: data.created_by,
-      roomId: data.room_id,
-      createdAt: data.created_dt
-    })
+    const m = dataToModel(data)
 
     return dispatch('users/apiGetUser', m.authorId, { root: true }).then(() => {
       // check if message with id exists and replace

@@ -2,6 +2,17 @@ import _ from 'lodash'
 import { RoomModel } from './models'
 import api from '@/services/api/index'
 
+export const dataToModel = data =>
+  new RoomModel({
+    id: data.id,
+    title: data.title,
+    authorId: data.created_by,
+    memberIds: data.members,
+    isPrivate: data.is_private,
+    createdAt: Date.parse(data.created_dt),
+    updatedAt: Date.parse(data.updated_dt)
+  })
+
 export default {
   loadRooms({ dispatch }) {
     return api.getRooms().then(data => {
@@ -12,15 +23,7 @@ export default {
   },
   // Add existing instance to vuex
   addRoom({ commit, dispatch }, { data }) {
-    const room = new RoomModel({
-      id: data.id,
-      title: data.title,
-      authorId: data.created_by,
-      memberIds: data.members,
-      isPrivate: data.is_private,
-      createdAt: Date.parse(data.created_dt),
-      updatedAt: Date.parse(data.updated_dt)
-    })
+    const room = dataToModel(data)
     commit('addRoom', room)
 
     // Connect to room' channel (websocket)
@@ -41,20 +44,19 @@ export default {
         isPrivate: payload.isPrivate
       })
 
-      api
-        .createRoom(room)
-        .then(roomData => {
-          return dispatch('addRoom', { data: roomData })
-        })
-        .then(roomInstance => {
-          const user = rootGetters['users/getById'](roomInstance.authorId)
+      api.createRoom(room).then(data => {
+        // The room will be added via "socket__addRoom"
+        //      dispatch('addRoom', { data: roomData })
 
-          // Add "created" notice
-          return dispatch('addNotice', {
-            message: `Room was created by ${user.fullName}`,
-            roomInstance
-          }).then(resolve(roomInstance))
-        })
+        const roomInstance = dataToModel(data)
+        const user = rootGetters['users/getById'](roomInstance.authorId)
+
+        // Add "created" notice
+        return dispatch('addNotice', {
+          message: `Room was created by ${user.fullName}`,
+          roomInstance
+        }).then(resolve(roomInstance))
+      })
     })
   },
   updateRoom({ dispatch, rootGetters, getters }, { data }) {

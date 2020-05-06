@@ -1,5 +1,5 @@
 <template>
-  <ul v-if="messages.length" id="messages">
+  <ul v-if="messages.length" id="messages" ref="messages">
     <div v-for="item in messages" :key="'message-' + item.id">
       <Notice v-if="item.isNotice" :data="item" />
       <RoomMessage v-else :data="item" />
@@ -39,13 +39,16 @@ export default {
         this.$nextTick(this.scrollToBottom)
         this.updatedAt = newMsg.createdAt
       }
+    },
+    roomInstance: function() {
+      this.scrollToBottom()
     }
   },
   methods: {
     scrollToBottom() {
-      document
-        .getElementById('messages')
-        .scrollIntoView(false, { block: 'end' })
+      this.$nextTick(() => {
+        this.$refs.messages.scrollIntoView(false, { block: 'end' })
+      })
     }
   },
   mounted() {

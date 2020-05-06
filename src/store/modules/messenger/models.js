@@ -1,3 +1,4 @@
+import store from '@/store'
 import BaseModel from '@/store/models'
 
 export class MessageModel extends BaseModel {
@@ -34,5 +35,9 @@ export class RoomModel extends BaseModel {
       userTyping: false,
       isPrivate: true
     }
+  }
+
+  get author() {
+    return store.getters['users/getById'](this.authorId)
   }
 }

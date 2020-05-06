@@ -20,10 +20,18 @@
     </v-list-item>
 
     <v-list-item-group v-model="activeRoom" color="primary">
-      <v-list-item v-for="item in rooms" :key="item.id" :value="item.id">
+      <v-list-item
+        v-for="item in rooms"
+        :key="item.id"
+        :value="item.id"
+        :disabled="item.id === activeRoom"
+        :color="item.id === activeRoom ? 'light-blue' : undefined"
+      >
         <v-list-item-icon>
-          <v-icon size="16" v-if="item.isPrivate">mdi-account-lock</v-icon>
-          <v-icon size="24" v-else>mdi-circle-medium</v-icon>
+          <v-icon size="16" v-if="item.isPrivate" color="purple"
+            >mdi-ghost</v-icon
+          >
+          <v-icon size="24" v-else>mdi-account-group</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -44,8 +52,6 @@ export default {
       },
       set: function(id) {
         this.$router.push({ name: 'room', params: { id } })
-        // this.$store.dispatch('messenger/setActiveRoom', { id }).then(() => {
-        // })
         this.$emit('closeMenu')
       }
     },

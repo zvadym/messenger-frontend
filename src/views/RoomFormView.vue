@@ -152,14 +152,10 @@ export default {
           members: this.members
         })
         .then(room => {
-          this.$store
-            .dispatch('messenger/setActiveRoom', { id: room.id })
-            .then(() => {
-              this.$router.push({
-                name: 'room',
-                params: { id: room.id }
-              })
-            })
+          this.$router.push({
+            name: 'room',
+            params: { id: room.id }
+          })
         })
     },
     editRoom() {
@@ -172,10 +168,10 @@ export default {
             members: this.members
           }
         })
-        .then(() => {
+        .then(room => {
           this.$router.push({
             name: 'room',
-            params: { id: this.editedRoomData.id }
+            params: { id: room.id }
           })
         })
     },

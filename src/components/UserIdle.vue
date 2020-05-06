@@ -51,7 +51,7 @@ export default {
     }
 
     if (timeDelta > 30 * 60 * 1000) {
-      console.warning('TODO: timeDelta > 30 min - reinit app')
+      console.warn('TODO: timeDelta > 30 min - reinit app')
     }
 
     if (

@@ -6,7 +6,16 @@ const USER_PING = 'user/my/ping/'
 
 export default {
   updateMyStatus() {
-    return axios.put(USER_PING, {}).then(response => response.data)
+    return axios
+      .put(USER_PING, {})
+      .then(response => response.data)
+      .catch(error => {
+        if (error.response.status === 401) {
+          console.warn('updateMyStatus: unauthorized ...')
+        } else {
+          throw error
+        }
+      })
   },
   getUserData(id) {
     return axios
