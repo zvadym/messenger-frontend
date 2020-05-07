@@ -1,19 +1,6 @@
 import store from '@/store'
 import BaseModel from '@/store/models'
 
-export class MessageModel extends BaseModel {
-  fields() {
-    return ['id', 'roomId', 'isNotice', 'authorId', 'message', 'createdAt']
-  }
-
-  defaults() {
-    return {
-      createdAt: Date.now(),
-      isNotice: false
-    }
-  }
-}
-
 export class RoomModel extends BaseModel {
   fields() {
     return [
@@ -39,5 +26,18 @@ export class RoomModel extends BaseModel {
 
   get author() {
     return store.getters['users/getById'](this.authorId)
+  }
+}
+
+export class MessageModel extends BaseModel {
+  fields() {
+    return ['id', 'roomId', 'isNotice', 'authorId', 'message', 'createdAt']
+  }
+
+  defaults() {
+    return {
+      createdAt: Date.now(),
+      isNotice: false
+    }
   }
 }

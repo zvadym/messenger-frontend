@@ -40,7 +40,7 @@ customized.interceptors.response.use(
     }
     if (error.response.status > 400) {
       if (Object.prototype.hasOwnProperty.call(error.response.data, 'detail')) {
-        bus.$emit('flash', error.response.data.detail, 'danger')
+        bus.$emit('flash', error.response.data.detail, 'error')
       }
     }
     return Promise.reject(error)
