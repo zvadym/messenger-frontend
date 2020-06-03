@@ -7,7 +7,8 @@ export const dataToModel = data =>
     message: data.message,
     authorId: data.created_by,
     roomId: data.room_id,
-    createdAt: data.created_dt
+    createdAt: data.created_dt,
+    isNotice: data.is_notice
   })
 
 export default {
@@ -34,17 +35,15 @@ export default {
       })
     })
   },
-  addMessage({ commit, getters, dispatch }, { data }) {
+  addMessage({ commit, getters }, { data }) {
     // Add message to store
-    const m = dataToModel(data)
+    const message = dataToModel(data)
 
-    return dispatch('users/apiGetUser', m.authorId, { root: true }).then(() => {
-      // check if message with id exists and replace
-      if (getters.getMessageById(m.id)) {
-        commit('updateMessage', m)
-      } else {
-        commit('addMessage', m)
-      }
-    })
+    // check if message with id exists and replace
+    if (getters.getMessageById(message.id)) {
+      commit('updateMessage', message)
+    } else {
+      commit('addMessage', message)
+    }
   }
 }

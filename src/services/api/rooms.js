@@ -18,12 +18,14 @@ export default {
       .then(response => response.data)
   },
   updateRoom(instance) {
-    return axios.put(ROOM_DETAILS.replace('{pk}', instance.id), {
-      id: instance.id,
-      title: instance.title,
-      members: instance.members,
-      is_private: instance.isPrivate
-    })
+    return axios
+      .put(ROOM_DETAILS.replace('{pk}', instance.id), {
+        id: instance.id,
+        title: instance.title,
+        members: instance.memberIds,
+        is_private: instance.isPrivate
+      })
+      .then(response => response.data)
   },
   createMessage(instance) {
     return axios
