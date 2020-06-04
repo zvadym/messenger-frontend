@@ -18,5 +18,8 @@ export default {
         )
       })
     }
+  },
+  socket__addNotification({ dispatch }, payload) {
+    dispatch('addMessage', { data: payload, isNotification: true })
   }
 }

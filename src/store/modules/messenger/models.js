@@ -31,13 +31,20 @@ export class RoomModel extends BaseModel {
 
 export class MessageModel extends BaseModel {
   fields() {
-    return ['id', 'roomId', 'isNotice', 'authorId', 'message', 'createdAt']
+    return [
+      'id',
+      'roomId',
+      'isNotification',
+      'authorId',
+      'message',
+      'createdAt'
+    ]
   }
 
   defaults() {
     return {
       createdAt: Date.now(),
-      isNotice: false
+      isNotification: false
     }
   }
 }

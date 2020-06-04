@@ -1,7 +1,7 @@
 <template>
   <ul v-if="messages.length" id="messages" ref="messages">
     <div v-for="item in messages" :key="'message-' + item.id">
-      <Notice v-if="item.isNotice" :data="item" />
+      <Notification v-if="item.isNotification" :data="item" />
       <RoomMessage v-else :data="item" />
     </div>
   </ul>
@@ -11,10 +11,10 @@
 <script>
 import RoomEmpty from './RoomEmpty'
 import RoomMessage from './RoomMessage'
-import Notice from './Notice'
+import Notification from './Notification'
 
 export default {
-  components: { RoomEmpty, RoomMessage, Notice },
+  components: { RoomEmpty, RoomMessage, Notification },
   props: {
     roomInstance: [Object]
   },

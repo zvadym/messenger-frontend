@@ -3,6 +3,7 @@ import axios from '@/axios'
 const ROOMS_LIST = 'rooms/'
 const ROOM_DETAILS = 'rooms/{pk}/'
 const MESSAGE_LIST = 'rooms/{room_pk}/messages/'
+const NOTIFICATION_LIST = 'rooms/{room_pk}/notifications/'
 
 export default {
   getRooms() {
@@ -37,6 +38,11 @@ export default {
   getMessages(roomId) {
     return axios
       .get(MESSAGE_LIST.replace('{room_pk}', roomId))
+      .then(response => response.data)
+  },
+  getNotifications(roomId) {
+    return axios
+      .get(NOTIFICATION_LIST.replace('{room_pk}', roomId))
       .then(response => response.data)
   }
 }
