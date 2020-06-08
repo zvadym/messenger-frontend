@@ -1,38 +1,38 @@
 <template>
-  <form>
-    <v-card class="mx-auto my-3" max-width="500" outlined>
-      <v-card-title>Login</v-card-title>
+  <v-card class="mx-auto my-3" min-width="500" outlined>
+    <v-card-title>Login</v-card-title>
 
-      <v-form class="ma-3" v-model="valid" ref="form">
-        <v-text-field
-          v-model="credentials.email"
-          :rules="[rules.required, rules.email]"
-          label="E-mail"
-          required
-        ></v-text-field>
+    <v-form class="ma-3" v-model="valid" ref="form" autocomplete="on">
+      <v-text-field
+        v-model="credentials.email"
+        :rules="[rules.required, rules.email]"
+        label="E-mail"
+        required
+        autocomplete="username"
+      ></v-text-field>
 
-        <v-text-field
-          v-model="credentials.password"
-          :rules="[rules.required]"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showPassword ? 'text' : 'password'"
-          label="Password"
-          required
-          @keydown.enter.prevent="login"
-          @click:append="showPassword = !showPassword"
-        ></v-text-field>
+      <v-text-field
+        v-model="credentials.password"
+        :rules="[rules.required]"
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="showPassword ? 'text' : 'password'"
+        label="Password"
+        required
+        @keydown.enter.prevent="login"
+        @click:append="showPassword = !showPassword"
+        autocomplete="current-password"
+      ></v-text-field>
 
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="mr-4"
-          @click.prevent="login"
-        >
-          Go
-        </v-btn>
-      </v-form>
-    </v-card>
-  </form>
+      <v-btn
+        :disabled="!valid"
+        color="success"
+        class="mr-4"
+        @click.prevent="login"
+      >
+        Go
+      </v-btn>
+    </v-form>
+  </v-card>
 </template>
 
 <script>
@@ -84,6 +84,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      // Set "redirect to" path
       vm.redirectTo = to.query.redirect || from.path
     })
   }
